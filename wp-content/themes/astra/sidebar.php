@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-$astra_sidebar = apply_filters( 'astra_get_sidebar', 'sidebar-1' );
+$sidebar = apply_filters( 'astra_get_sidebar', 'sidebar-1' );
 
 echo '<div ';
 	echo astra_attr(
@@ -20,21 +20,19 @@ echo '<div ';
 		array(
 			'id'    => 'secondary',
 			'class' => join( ' ', astra_get_secondary_class() ),
+			'role'  => 'complementary',
 		)
 	);
 	echo '>';
 	?>
 
-	<div class="sidebar-main" <?php /** @psalm-suppress TooManyArguments */ echo apply_filters( 'astra_sidebar_data_attrs', '', $astra_sidebar ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, Generic.Commenting.DocComment.MissingShort ?>>
+	<div class="sidebar-main" <?php echo apply_filters( 'astra_sidebar_data_attrs', '', $sidebar ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 		<?php astra_sidebars_before(); ?>
-
-		<?php
-
-		if ( is_active_sidebar( $astra_sidebar ) ) :
-				dynamic_sidebar( $astra_sidebar );
-		endif;
-
-		astra_sidebars_after();
+		<?php 
+		if ( is_active_sidebar( $sidebar ) ) :
+				dynamic_sidebar( $sidebar );
+			endif;
+		astra_sidebars_after(); 
 		?>
 
 	</div><!-- .sidebar-main -->

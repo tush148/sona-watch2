@@ -85,9 +85,7 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 					$val = $input_attrs['min'];
 				}
 
-				/** @psalm-suppress InvalidCast */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 				$dv = (float) $val / $input_attrs['step'];
-				/** @psalm-suppress InvalidCast */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 
 				$dv = round( $dv );
 
@@ -367,7 +365,7 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 		/**
 		 * Sanitize checkbox
 		 *
-		 * @param  mixed $input setting input.
+		 * @param  number $input setting input.
 		 * @return number        setting input value.
 		 */
 		public static function sanitize_checkbox( $input ) {
@@ -409,11 +407,6 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 
 			if ( '' === $color ) {
 				return '';
-			}
-
-			// CSS variable value sanitize.
-			if ( 0 === strpos( $color, 'var(--' ) ) {
-				return preg_replace( '/[^A-Za-z0-9_)(\-,.]/', '', $color );
 			}
 
 			if ( false === strpos( $color, 'rgba' ) ) {
@@ -600,10 +593,10 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 		 * @return Array
 		 */
 		public static function sanitize_customizer_links( $val ) {
-			$val['linked']         = sanitize_text_field( $val['linked'] );
-			$val['link_text']      = esc_html( $val['link_text'] );
-			$val['link_type']      = esc_html( $val['link_type'] );
-			$val['is_button_link'] = esc_html( isset( $val['is_button_link'] ) ? $val['is_button_link'] : '#' );
+			$val['linked']    = sanitize_text_field( $val['linked'] );
+			$val['link_text'] = esc_html( $val['link_text'] );
+			$val['link_type'] = esc_html( $val['link_type'] );
+
 			return $val;
 		}
 

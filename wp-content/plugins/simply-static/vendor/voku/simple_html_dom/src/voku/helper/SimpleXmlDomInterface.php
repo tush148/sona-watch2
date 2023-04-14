@@ -250,11 +250,10 @@ interface SimpleXmlDomInterface extends \IteratorAggregate
      * Get dom node's inner html.
      *
      * @param bool $multiDecodeNewHtmlEntity
-     * @param bool $putBrokenReplacedBack
      *
      * @return string
      */
-    public function innerHtml(bool $multiDecodeNewHtmlEntity = false, bool $putBrokenReplacedBack = true): string;
+    public function innerHtml(bool $multiDecodeNewHtmlEntity = false): string;
 
     /**
      * Get dom node's inner html.
@@ -308,13 +307,6 @@ interface SimpleXmlDomInterface extends \IteratorAggregate
      * @return SimpleXmlDomInterface|null
      */
     public function previousSibling();
-
-    /**
-     * Returns the previous sibling of node.
-     *
-     * @return SimpleXmlDomInterface|null
-     */
-    public function previousNonWhitespaceSibling();
 
     /**
      * Remove attribute.

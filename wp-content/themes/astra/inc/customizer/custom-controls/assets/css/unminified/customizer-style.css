@@ -27,22 +27,7 @@
 .customize-control:not(.customize-control-nav_menu_item) {
   position: relative;
   margin-bottom: 0;
-  margin-top: 16px;
-}
-
-.customize-control.customize-control-ast-color, .customize-control.customize-control-ast-color-group, .customize-control-ast-responsive-background, .customize-control-ast-background {
-  display: flex;
-  align-items: center;
-  min-height: 28px;
-  flex-wrap: wrap;
-}
-
-.customize-control-ast-responsive-background label {
-  white-space: nowrap;
-}
-
-.customize-control[ID*="-builder-layout-ast-context-tabs"] {
-  margin-top: 0;
+  margin-top: 25px;
 }
 
 [ID*="-builder-layout-ast-context-tabs"] {
@@ -50,7 +35,7 @@
 }
 
 .customize-section-title {
-  margin: -12px -24px 0 -24px;
+  margin: -12px -20px 0 -20px;
 }
 
 .customize-section-description-container, #customize-controls .customize-info.section-meta, #customize-controls .customize-info {
@@ -69,10 +54,6 @@
   margin-bottom: 0;
 }
 
-.components-base-control .components-base-control__field .components-input-control__backdrop {
-  border-color: #D1D5DB !important;
-}
-
 .customize-control .customize-inside-control-row {
   padding-top: 0;
   padding-bottom: 0;
@@ -80,8 +61,7 @@
 
 .customize-control-title {
   display: inline-block;
-  margin-bottom: 16px;
-  vertical-align: middle;
+  margin-bottom: 20px;
 }
 
 .customize-control-ast-color .customize-control-title, .customize-control-ast-responsive-background .customize-control-title,
@@ -89,38 +69,14 @@
   display: contents;
 }
 
+.customize-control-ast-font-variant .select2 {
+  margin-bottom: 12px;
+}
+
 .customize-control .ast-control-tooltip {
   position: absolute;
   top: 0;
   right: 0;
-  color: var(--ast-customizer-color-6);
-}
-
-.customize-control.customize-control-ast-toggle-control .ast-control-tooltip {
-  position: absolute;
-  top: 50%;
-  right: 40px;
-  transform: translateY(-50%);
-  z-index: 1;
-}
-
-.customize-control.customize-control-ast-toggle-control.ast-top-dotted-divider .ast-control-tooltip {
-  position: absolute;
-  top: 55%;
-  right: 40px;
-  transform: translateY(0);
-}
-
-.customize-control.customize-control-ast-toggle-control.ast-top-divider .ast-control-tooltip {
-  top: calc(50% + 15px);
-}
-
-.customize-control.customize-control-ast-toggle-control.ast-bottom-divider .ast-control-tooltip {
-  top: calc(50% - 11px);
-}
-
-.customize-control.customize-control-ast-toggle-control .ast-description-enabled .components-form-toggle {
-  margin-left: 25px;
 }
 
 .customize-control.customize-control-ast-divider .ast-control-tooltip {
@@ -154,7 +110,7 @@ input[type="text"].select2-search__field {
 /* CSS to show popups without scroll */
 #customize-theme-controls .control-section.open {
   height: 100%;
-  padding: 12px 24px 25px 24px;
+  padding: 12px 20px 25px 20px;
 }
 
 /* Safari Browser specific CSS */
@@ -167,6 +123,9 @@ input[type="text"].select2-search__field {
     .dashicons-desktop:before, .dashicons-tablet:before, .dashicons-smartphone:before {
       color: #000000;
       opacity: .75;
+    }
+    .ast-field-settings-modal .customize-control-ast-responsive .input-wrapper .ast-responsive-input.active + .ast-responsive-select {
+      width: 20%;
     }
     .ast-reset-btn.components-button svg {
       padding: 0px;
@@ -209,83 +168,4 @@ input[type="text"].select2-search__field {
 
 .block-editor-block-inspector .block-editor-block-card {
   margin-top: 12px;
-}
-
-/* Customizer - builder widget area's block gets round shapes in more-settings tab */
-.components-circular-option-picker__option-wrapper::before {
-  background: unset;
-}
-
-.block-editor-panel-color-gradient-settings .components-circular-option-picker__option-wrapper {
-  position: relative;
-}
-
-/* Hiding this specific control on responsive devices.  */
-.preview-tablet #customize-control-astra-settings-woo-desktop-cart-flyout-width {
-  display: none;
-}
-
-.preview-tablet #customize-control-astra-settings-woo-desktop-cart-flyout-direction {
-  display: none;
-}
-
-.preview-mobile #customize-control-astra-settings-woo-desktop-cart-flyout-width {
-  display: none;
-}
-
-.preview-mobile #customize-control-astra-settings-woo-desktop-cart-flyout-direction {
-  display: none;
-}
-
-#customize-theme-controls .accordion-section-title, #customize-outer-theme-controls .accordion-section-title,
-#customize-controls .control-section.control-section-ast_section .accordion-section-title {
-  border-bottom: 1px solid var(--ast-customizer-color-7);
-}
-
-.wp-core-ui #customize-controls .control-section:hover > .accordion-section-title,
-.wp-core-ui #customize-controls .control-section .accordion-section-title:hover,
-.wp-core-ui #customize-controls .control-section .accordion-section-title:focus,
-.wp-core-ui .customize-panel-back:hover,
-.wp-core-ui .customize-panel-back:focus,
-.wp-core-ui .customize-section-back:hover,
-.wp-core-ui .customize-section-back:focus {
-  border-left-color: var(--ast-customizer-color-1);
-}
-
-/* Toggle Section Control */
-.ast-section-toggle {
-  display: grid;
-  grid-template-columns: 80% 1fr 1fr;
-}
-
-.ast-section-toggle label {
-  font-size: 14px;
-  line-height: 1;
-  font-weight: 600;
-}
-
-.ast-section-toggle:not(.active) > label {
-  cursor: default;
-}
-
-.ast-section-toggle-icon {
-  color: var(--wp-admin-theme-color);
-  cursor: pointer;
-  margin-bottom: -4px;
-  margin-left: 10px;
-}
-
-.ast-section-toggle-icon span {
-  font-size: 16px;
-  line-height: 16px;
-}
-
-.customize-control-ast-section-toggle {
-  padding-top: 25px;
-  padding-bottom: 16px;
-}
-
-li[ID*="accordion-section-ast-dynamic-single-"].control-section-ast_section,
-li[ID*="accordion-section-ast-dynamic-archive-"].control-section-ast_section {
-  display: none !important;
 }

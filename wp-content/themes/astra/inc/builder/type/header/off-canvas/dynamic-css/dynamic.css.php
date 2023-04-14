@@ -27,9 +27,6 @@ add_filter( 'astra_dynamic_theme_css', 'astra_off_canvas_row_setting', 11 );
 function astra_off_canvas_row_setting( $dynamic_css, $dynamic_css_filtered = '' ) {
 
 	$selector = '.ast-mobile-popup-drawer.active';
-	if ( ! Astra_Builder_Helper::is_component_loaded( 'mobile-trigger', 'header' ) && ! is_customize_preview() ) {
-		return $dynamic_css;
-	}
 
 	$off_canvas_background       = astra_get_option( 'off-canvas-background' );
 	$off_canvas_close_color      = astra_get_option( 'off-canvas-close-color' );
@@ -156,11 +153,6 @@ function astra_off_canvas_static_css() {
 		display: flex;
 		box-shadow: none;
 	}
-
-	.ast-mobile-popup-drawer .ast-mobile-popup-header .menu-toggle-close:focus {
-		outline: thin dotted;
-	}
-
 	.ast-mobile-popup-drawer.ast-mobile-popup-full-width .ast-mobile-popup-inner {
 		max-width: none;
 		transition: transform 0s ease-in, opacity 0.2s ease-in;
@@ -252,7 +244,7 @@ function astra_off_canvas_static_css() {
 		}
 		.ast-mobile-popup-drawer .ast-mobile-popup-inner {
 			width: 100%;
-			transform: translateX(-115%);
+			transform: translateX(100%);
 			max-width: 90%;
 			left: 0;
 			top: 0;
@@ -270,7 +262,7 @@ function astra_off_canvas_static_css() {
 			overflow-x:hidden;
 		}
 		.ast-mobile-popup-drawer.ast-mobile-popup-left .ast-mobile-popup-inner {
-			transform: translateX(-115%);
+			transform: translateX(-100%);
 			left: auto;
 			right: 0;
 		}
@@ -494,7 +486,6 @@ function astra_dropdown_type_static_css() {
 		.ast-mobile-header-content.content-align-flex-end .main-header-bar-navigation .menu-item-has-children > .ast-menu-toggle,
 		.ast-desktop-header-content.content-align-flex-end .main-header-bar-navigation .menu-item-has-children > .ast-menu-toggle {
 		  	right: calc( 20px - 0.907em);
-			left: auto;
 		}
 		.ast-mobile-header-content .ast-search-menu-icon,
 		.ast-mobile-header-content .ast-search-menu-icon.slide-search,
@@ -547,8 +538,7 @@ function astra_dropdown_type_static_css() {
 		$dropdown_type_css .= '
 		.ast-mobile-header-content.content-align-flex-end .main-header-bar-navigation .menu-item-has-children > .ast-menu-toggle,
 		.ast-desktop-header-content.content-align-flex-end .main-header-bar-navigation .menu-item-has-children > .ast-menu-toggle {
-			left: calc( 20px - 0.907em);
-			right: auto;
+		  	left: calc( 20px - 0.907em);
 		}
 		.ast-mobile-header-content .ast-search-menu-icon,
 		.ast-mobile-header-content .ast-search-menu-icon.slide-search,

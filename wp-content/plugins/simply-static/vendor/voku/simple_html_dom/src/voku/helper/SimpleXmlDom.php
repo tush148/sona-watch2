@@ -150,18 +150,16 @@ class SimpleXmlDom extends AbstractSimpleXmlDom implements \IteratorAggregate, S
      * Replace child node.
      *
      * @param string $string
-     * @param bool   $putBrokenReplacedBack
      *
      * @return SimpleXmlDomInterface
      */
-    protected function replaceChildWithString(string $string, bool $putBrokenReplacedBack = true): SimpleXmlDomInterface
+    protected function replaceChildWithString(string $string): SimpleXmlDomInterface
     {
         if (!empty($string)) {
             $newDocument = new XmlDomParser($string);
 
             $tmpDomString = $this->normalizeStringForComparision($newDocument);
             $tmpStr = $this->normalizeStringForComparision($string);
-
             if ($tmpDomString !== $tmpStr) {
                 throw new \RuntimeException(
                     'Not valid XML fragment!' . "\n" .
@@ -221,7 +219,6 @@ class SimpleXmlDom extends AbstractSimpleXmlDom implements \IteratorAggregate, S
 
         $tmpDomOuterTextString = $this->normalizeStringForComparision($newDocument);
         $tmpStr = $this->normalizeStringForComparision($string);
-
         if ($tmpDomOuterTextString !== $tmpStr) {
             throw new \RuntimeException(
                 'Not valid XML fragment!' . "\n"
@@ -455,7 +452,7 @@ class SimpleXmlDom extends AbstractSimpleXmlDom implements \IteratorAggregate, S
      */
     public function getElementByClass(string $class): SimpleXmlDomNodeInterface
     {
-        return $this->findMulti(".{$class}");
+        return $this->findMulti(".${class}");
     }
 
     /**
@@ -467,7 +464,7 @@ class SimpleXmlDom extends AbstractSimpleXmlDom implements \IteratorAggregate, S
      */
     public function getElementById(string $id): SimpleXmlDomInterface
     {
-        return $this->findOne("#{$id}");
+        return $this->findOne("#${id}");
     }
 
     /**
@@ -502,7 +499,7 @@ class SimpleXmlDom extends AbstractSimpleXmlDom implements \IteratorAggregate, S
      */
     public function getElementsById(string $id, $idx = null)
     {
-        return $this->find("#{$id}", $idx);
+        return $this->find("#${id}", $idx);
     }
 
     /**
@@ -567,13 +564,12 @@ class SimpleXmlDom extends AbstractSimpleXmlDom implements \IteratorAggregate, S
      * Get dom node's inner html.
      *
      * @param bool $multiDecodeNewHtmlEntity
-     * @param bool $putBrokenReplacedBack
      *
      * @return string
      */
-    public function innerHtml(bool $multiDecodeNewHtmlEntity = false, bool $putBrokenReplacedBack = true): string
+    public function innerHtml(bool $multiDecodeNewHtmlEntity = false): string
     {
-        return $this->getXmlDomParser()->innerHtml($multiDecodeNewHtmlEntity, $putBrokenReplacedBack);
+        return $this->getXmlDomParser()->innerHtml($multiDecodeNewHtmlEntity);
     }
 
     /**
@@ -663,28 +659,6 @@ class SimpleXmlDom extends AbstractSimpleXmlDom implements \IteratorAggregate, S
     {
         /** @var \DOMNode|null $node */
         $node = $this->node->previousSibling;
-
-        if ($node === null) {
-            return null;
-        }
-
-        return new static($node);
-    }
-
-    /**
-     * Returns the previous sibling of node.
-     *
-     * @return SimpleXmlDomInterface|null
-     */
-    public function previousNonWhitespaceSibling()
-    {
-        /** @var \DOMNode|null $node */
-        $node = $this->node->previousSibling;
-
-        while ($node && !\trim($node->textContent)) {
-            /** @var \DOMNode|null $node */
-            $node = $node->previousSibling;
-        }
 
         if ($node === null) {
             return null;
@@ -812,7 +786,7 @@ class SimpleXmlDom extends AbstractSimpleXmlDom implements \IteratorAggregate, S
     private function normalizeStringForComparision($input): string
     {
         if ($input instanceof XmlDomParser) {
-            $string = $input->html(false, false);
+            $string = $input->plaintext;
         } else {
             $string = (string) $input;
         }

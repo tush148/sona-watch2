@@ -57,7 +57,6 @@ if ( ! class_exists( 'Astra_Customizer_Control_Base' ) ) {
 
 			wp_enqueue_style( 'astra-custom-control-style' . $file_rtl, $css_uri . 'custom-controls' . $file_prefix . $file_rtl . '.css', null, ASTRA_THEME_VERSION );
 
-			/** @psalm-suppress TypeDoesNotContainType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			if ( ! SCRIPT_DEBUG ) {
 
 				// Enqueue Customizer script.
@@ -101,6 +100,11 @@ if ( ! class_exists( 'Astra_Customizer_Control_Base' ) ) {
 				);
 
 				wp_localize_script( 'astra-custom-control-script', 'astraTypo', $astra_typo_localize );
+				$localize_array = array(
+					'colors' => astra_color_palette(),
+				);
+
+				wp_localize_script( 'astra-custom-control-script', 'astColorPalette', $localize_array );
 
 			} else {
 
@@ -153,6 +157,8 @@ if ( ! class_exists( 'Astra_Customizer_Control_Base' ) ) {
 					'900'       => __( 'Ultra-Bold 900', 'astra' ),
 					'900italic' => __( '900 Italic', 'astra' ),
 				);
+
+				wp_localize_script( 'astra-custom-control-react-script', 'astColorPalette', $localize_array );
 				wp_localize_script( 'astra-custom-control-react-script', 'astraTypo', $astra_typo_localize );
 			}
 		}

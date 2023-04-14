@@ -22,11 +22,10 @@ class SelectorConverter
      *                                      Ignore css selector errors and use the $selector as it is on error,
      *                                      so that you can also use xPath selectors.
      *                                      </p>
-     * @param bool $isForHtml
      *
      * @return string
      */
-    public static function toXPath(string $selector, bool $ignoreCssSelectorErrors = false, bool $isForHtml = true)
+    public static function toXPath(string $selector, bool $ignoreCssSelectorErrors = false)
     {
         if (isset(self::$compiled[$selector])) {
             return self::$compiled[$selector];
@@ -50,13 +49,7 @@ class SelectorConverter
             throw new \RuntimeException('Unable to filter with a CSS selector as the Symfony CssSelector 2.8+ is not installed (you can use filterXPath instead).');
         }
 
-        $converterKey = '-' . $isForHtml . '-' . $ignoreCssSelectorErrors . '-';
-        static $converterArray = [];
-        if (!isset($converterArray[$converterKey])) {
-            $converterArray[$converterKey] = new CssSelectorConverter($isForHtml);
-        }
-        $converter = $converterArray[$converterKey];
-        assert($converter instanceof CssSelectorConverter);
+        $converter = new CssSelectorConverter(true);
 
         if ($ignoreCssSelectorErrors) {
             try {

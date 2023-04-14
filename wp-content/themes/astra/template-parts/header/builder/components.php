@@ -5,27 +5,27 @@
  * @package Astra
  */
 
-$astra_header_component_args = array();
-$astra_header_component_slug = get_query_var( 'type' );
 if ( astra_wp_version_compare( '5.4.99', '>=' ) ) {
-	$astra_header_component_args = wp_parse_args(
+	$component_args = wp_parse_args(
 		$args,
 		array(
 			'type'   => '',
 			'device' => '',
-		)
+		) 
 	);
-	$astra_header_component_slug = isset( $astra_header_component_args['type'] ) ? $astra_header_component_args['type'] : '';
+	$component_slug = $component_args['type'];
+} else {
+	$component_slug = get_query_var( 'type' );
 }
 
-$astra_active_device = isset( $astra_header_component_args['device'] ) ? $astra_header_component_args['device'] : '';
+$device = $component_args['device'];
 
-switch ( $astra_header_component_slug ) {
+switch ( $component_slug ) {
 
 	case 'logo':
 		?>
 		<div class="ast-builder-layout-element ast-flex site-header-focus-item" data-section="title_tagline">
-			<?php do_action( 'astra_site_identity', $astra_active_device ); ?>
+			<?php do_action( 'astra_site_identity' ); ?>
 		</div>
 		<?php
 		break;
@@ -41,7 +41,7 @@ switch ( $astra_header_component_slug ) {
 	case 'menu-1':
 		?>
 		<div class="ast-builder-menu-1 ast-builder-menu ast-flex ast-builder-menu-1-focus-item ast-builder-layout-element site-header-focus-item" data-section="section-hb-menu-1">
-			<?php do_action( 'astra_header_menu_1', $astra_active_device ); ?>
+			<?php do_action( 'astra_header_menu_1' ); ?>
 		</div>
 		<?php
 		break;
@@ -49,7 +49,7 @@ switch ( $astra_header_component_slug ) {
 	case 'menu-2':
 		?>
 		<div class="ast-builder-menu-2 ast-builder-menu ast-flex ast-builder-menu-2-focus-item ast-builder-layout-element site-header-focus-item" data-section="section-hb-menu-2">
-			<?php do_action( 'astra_header_menu_2', $astra_active_device ); ?>
+			<?php do_action( 'astra_header_menu_2' ); ?>
 		</div>
 		<?php
 		break;
@@ -57,7 +57,7 @@ switch ( $astra_header_component_slug ) {
 	case 'mobile-menu':
 		?>
 		<div class="ast-builder-menu-mobile ast-builder-menu ast-builder-menu-mobile-focus-item ast-builder-layout-element site-header-focus-item" data-section="section-header-mobile-menu">
-			<?php do_action( 'astra_header_menu_mobile', $astra_active_device ); ?>
+			<?php do_action( 'astra_header_menu_mobile' ); ?>
 		</div>
 		<?php
 		break;
@@ -95,7 +95,7 @@ switch ( $astra_header_component_slug ) {
 		break;
 
 	case 'mobile-trigger':
-		if ( 'desktop' === $astra_active_device && ! defined( 'ASTRA_EXT_VER' ) ) {
+		if ( 'desktop' === $device && ! defined( 'ASTRA_EXT_VER' ) ) {
 			break;
 		}
 		?>
@@ -142,8 +142,8 @@ switch ( $astra_header_component_slug ) {
 				'class'        => 'header-widget-area widget-area site-header-focus-item',
 				'data-section' => 'sidebar-widgets-header-widget-1',
 				'aria-label'   => 'Header Widget 1',
-			)
-		);
+			) 
+		); 
 		?>
 		>
 			<?php
@@ -151,13 +151,13 @@ switch ( $astra_header_component_slug ) {
 				Astra_Builder_UI_Controller::render_customizer_edit_button();
 			}
 			?>
-			<?php
+			<?php 
 			astra_markup_open( 'header-widget-div' );
 			astra_get_sidebar( 'header-widget-1' );
-			astra_markup_close( 'header-widget-div' );
+			astra_markup_close( 'header-widget-div' ); 
 			?>
 		</aside>
-			<?php
+			<?php 
 		break;
 	case 'widget-2':
 		?>
@@ -169,8 +169,8 @@ switch ( $astra_header_component_slug ) {
 				'class'        => 'header-widget-area widget-area site-header-focus-item',
 				'data-section' => 'sidebar-widgets-header-widget-2',
 				'aria-label'   => 'Header Widget 2',
-			)
-		);
+			) 
+		); 
 		?>
 		>
 			<?php
@@ -180,15 +180,15 @@ switch ( $astra_header_component_slug ) {
 			?>
 			<?php
 			astra_markup_open( 'header-widget-div' );
-			astra_get_sidebar( 'header-widget-2' );
-			astra_markup_close( 'header-widget-div' );
+			astra_get_sidebar( 'header-widget-2' ); 
+			astra_markup_close( 'header-widget-div' ); 
 			?>
 		</aside>
-		<?php
+		<?php 
 		break;
-
+		
 	default:
-		do_action( 'astra_render_header_components', $astra_header_component_slug, $astra_active_device );
+		do_action( 'astra_render_header_components', $component_slug );
 		break;
 
 }

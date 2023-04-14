@@ -50,8 +50,6 @@ if ( ! class_exists( 'Astra_Builder_Header' ) ) {
 		 */
 		public function __construct() {
 
-			add_action( 'astra_header', array( $this, 'global_astra_header' ), 0 );
-
 			if ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) {
 
 				$this->remove_existing_actions();
@@ -123,31 +121,13 @@ if ( ! class_exists( 'Astra_Builder_Header' ) ) {
 				} elseif ( 0 === strpos( $func, 'menu_' ) ) {
 					$index = (int) substr( $func, strrpos( $func, '_' ) + 1 );
 					if ( $index ) {
-						Astra_Header_Menu_Component::menu_markup( $index, $params['0'] );
+						Astra_Header_Menu_Component::menu_markup( $index );
 					}
 				} elseif ( 0 === strpos( $func, 'header_social_' ) ) {
 					$index = (int) substr( $func, strrpos( $func, '_' ) + 1 );
 					if ( $index ) {
 						Astra_Builder_UI_Controller::render_social_icon( $index, 'header' );
 					}
-				}
-			}
-		}
-
-		/**
-		 * Remove complete header Support on basis of meta option.
-		 *
-		 * @since 3.8.0
-		 * @return void
-		 */
-		public function global_astra_header() {
-			$display = get_post_meta( absint( astra_get_post_id() ), 'ast-global-header-display', true );
-			$display = apply_filters( 'astra_header_display', $display );
-			if ( 'disabled' === $display ) {
-				remove_action( 'astra_header', 'astra_header_markup' );
-				/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-				if ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) { // phpcs:ignore PHPCompatibility.Keywords.NewKeywords.t_namespaceFound, PHPCompatibility.LanguageConstructs.NewLanguageConstructs.t_ns_separatorFound
-					remove_action( 'astra_header', array( $this, 'header_builder_markup' ) ); // phpcs:ignore PHPCompatibility.Keywords.NewKeywords.t_namespaceFound, PHPCompatibility.LanguageConstructs.NewLanguageConstructs.t_ns_separatorFound
 				}
 			}
 		}
@@ -217,11 +197,9 @@ if ( ! class_exists( 'Astra_Builder_Header' ) ) {
 
 		/**
 		 * Render site logo.
-		 *
-		 * @param  string $device   Device name.
 		 */
-		public static function site_identity( $device = 'desktop' ) {
-			Astra_Builder_UI_Controller::render_site_identity( $device );
+		public static function site_identity() {
+			Astra_Builder_UI_Controller::render_site_identity();
 		}
 
 		/**
@@ -271,7 +249,7 @@ if ( ! class_exists( 'Astra_Builder_Header' ) ) {
 		public function primary_header() {
 
 			$display = get_post_meta( get_the_ID(), 'ast-main-header-display', true );
-			$display = apply_filters( 'astra_main_header_display', $display );
+			$display = apply_filters( 'ast_main_header_display', $display );
 
 			if ( 'disabled' !== $display ) {
 				if ( astra_wp_version_compare( '5.4.99', '>=' ) ) {
@@ -378,12 +356,13 @@ if ( ! class_exists( 'Astra_Builder_Header' ) ) {
 			}
 		}
 
+
 		/**
 		 *  Call Mobile below header UI.
 		 */
 		public function mobile_below_header() {
 
-			$display = get_post_meta( absint( astra_get_post_id() ), 'ast-hfb-mobile-header-display', true );
+			$display = get_post_meta( get_the_ID(), 'ast-hfb-mobile-header-display', true );
 			$display = apply_filters( 'astra_below_mobile_header_display', $display );
 
 			if ( 'disabled' !== $display ) {
@@ -415,11 +394,9 @@ if ( ! class_exists( 'Astra_Builder_Header' ) ) {
 
 		/**
 		 *  Call Mobile Menu Markup.
-		 *
-		 * @param string $device Checking where mobile-menu is dropped.
 		 */
-		public function header_mobile_menu_markup( $device = '' ) {
-			Astra_Mobile_Menu_Component::menu_markup( $device );
+		public function header_mobile_menu_markup() {
+			Astra_Mobile_Menu_Component::menu_markup();
 		}
 
 		/**
@@ -427,9 +404,7 @@ if ( ! class_exists( 'Astra_Builder_Header' ) ) {
 		 */
 		public function mobile_cart_flyout() {
 
-			// Hide cart flyout only if current page is checkout/cart.
-			if ( ( Astra_Builder_Helper::is_component_loaded( 'woo-cart', 'header' ) && class_exists( 'WooCommerce' ) && ! is_cart() && ! is_checkout() ) || Astra_Builder_Helper::is_component_loaded( 'edd-cart', 'header' ) ) {
-
+			if ( Astra_Builder_Helper::is_component_loaded( 'woo-cart', 'header' ) || Astra_Builder_Helper::is_component_loaded( 'edd-cart', 'header' ) ) {
 				Astra_Builder_UI_Controller::render_mobile_cart_flyout_markup();
 			}
 		}

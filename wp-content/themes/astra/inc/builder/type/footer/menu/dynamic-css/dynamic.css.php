@@ -167,11 +167,9 @@ function astra_hb_footer_menu_dynamic_css( $dynamic_css, $dynamic_css_filtered =
 	$css_output_tablet = array(
 		'.footer-widget-area[data-section="section-footer-menu"] .astra-footer-tablet-horizontal-menu' => array(
 			'justify-content' => $tablet_alignment,
-			'display'         => 'flex',
 		),
 		'.footer-widget-area[data-section="section-footer-menu"] .astra-footer-tablet-vertical-menu' => array(
-			'display'         => 'grid',
-			'justify-content' => $tablet_alignment,
+			'display' => 'grid',
 		),
 		'.footer-widget-area[data-section="section-footer-menu"] .astra-footer-tablet-vertical-menu .menu-item' => array(
 			'align-items' => $tablet_alignment,
@@ -209,11 +207,9 @@ function astra_hb_footer_menu_dynamic_css( $dynamic_css, $dynamic_css_filtered =
 		$selector                                       => astra_get_responsive_background_obj( $menu_resp_bg_color, 'mobile' ),
 		'.footer-widget-area[data-section="section-footer-menu"] .astra-footer-mobile-horizontal-menu' => array(
 			'justify-content' => $mobile_alignment,
-			'display'         => 'flex',
 		),
 		'.footer-widget-area[data-section="section-footer-menu"] .astra-footer-mobile-vertical-menu' => array(
-			'display'         => 'grid',
-			'justify-content' => $mobile_alignment,
+			'display' => 'grid',
 		),
 		'.footer-widget-area[data-section="section-footer-menu"] .astra-footer-mobile-vertical-menu .menu-item' => array(
 			'align-items' => $mobile_alignment,
@@ -238,7 +234,7 @@ function astra_hb_footer_menu_dynamic_css( $dynamic_css, $dynamic_css_filtered =
 	);
 
 	/* Parse CSS from array() */
-	$css_output  = astra_footer_menu_static_css();
+	$css_output  = footer_menu_static_css();
 	$css_output .= astra_parse_css( $css_output_desktop );
 	$css_output .= astra_parse_css( $css_output_tablet, '', astra_get_tablet_breakpoint() );
 	$css_output .= astra_parse_css( $css_output_mobile, '', astra_get_mobile_breakpoint() );
@@ -252,11 +248,11 @@ function astra_hb_footer_menu_dynamic_css( $dynamic_css, $dynamic_css_filtered =
 
 /**
  * Footer menu static CSS
- *
+ * 
  * @since 3.5.0
  * @return string
  */
-function astra_footer_menu_static_css() {
+function footer_menu_static_css() {
 	$footer_menu_css = '
 	.footer-nav-wrap .astra-footer-vertical-menu {
 		display: grid;
@@ -268,7 +264,7 @@ function astra_footer_menu_static_css() {
 		.footer-nav-wrap .astra-footer-horizontal-menu a {
 		  padding: 0 0.5em;
 		}
-	}';
+	}'; 
 
 	if ( is_rtl() ) {
 		$footer_menu_css .= '

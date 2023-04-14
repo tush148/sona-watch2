@@ -27,7 +27,7 @@ class Archive_Creation_Job extends \WP_Background_Process {
 
 	/**
 	 * An instance of the options structure containing all options for this plugin
-	 * @var \Simply_Static\Options
+	 * @var Simply_Static\Options
 	 */
 	protected $options = null;
 
@@ -53,31 +53,15 @@ class Archive_Creation_Job extends \WP_Background_Process {
 	}
 
 	/**
-	 * Get Options instance.
-	 *
-	 * @return Options|null
-	 */
-	public function get_options() {
-		return $this->options;
-	}
-
-	/**
 	 * Helper method for starting the Archive_Creation_Job
 	 * @return boolean true if we were able to successfully start generating an archive
 	 */
-	public function start( $blog_id = 0 ) {
-		if ( ! $blog_id ) {
-			$blog_id = get_current_blog_id();
-		}
-
-		do_action( 'ss_archive_creation_job_before_start', $blog_id, $this );
-
+	public function start() {
 		if ( $this->is_job_done() ) {
-
 			Util::debug_log( "Starting a job; no job is presently running" );
 			Util::debug_log( "Here's our task list: " . implode( ', ', $this->task_list ) );
 
-			do_action( 'ss_archive_creation_job_before_start_queue', $blog_id, $this );
+			global $blog_id;
 
 			$first_task = $this->task_list[0];
 			$archive_name = join( '-', array( Plugin::SLUG, $blog_id, time() ) );
@@ -95,14 +79,10 @@ class Archive_Creation_Job extends \WP_Background_Process {
 				->save()
 				->dispatch();
 
-			do_action( 'ss_archive_creation_job_after_start_queue', $blog_id, $this );
-
 			return true;
 		} else {
 			Util::debug_log( "Not starting; we're already in the middle of a job" );
 			// looks like we're in the middle of creating an archive...
-			do_action( 'ss_archive_creation_job_already_running', $blog_id, $this );
-
 			return false;
 		}
 	}
@@ -189,8 +169,6 @@ class Archive_Creation_Job extends \WP_Background_Process {
 
 		$this->save_status_message( sprintf( __( 'Done! Finished in %s', 'simply-static' ), $time_string ) );
 		parent::complete();
-
-		do_action('ss_completed', 'success');
 	}
 
 
@@ -307,7 +285,6 @@ class Archive_Creation_Job extends \WP_Background_Process {
 		Util::debug_log( $exception );
 		$message = sprintf( __( "An exception occurred: %s", 'simply-static' ), $exception->getMessage() );
 		$this->save_status_message( $message, 'error' );
-		do_action('ss_completed', 'exception', $message);
 		return 'cancel';
 	}
 
@@ -321,7 +298,6 @@ class Archive_Creation_Job extends \WP_Background_Process {
 		Util::debug_log( $wp_error );
 		$message = sprintf( __( "An error occurred: %s", 'simply-static' ), $wp_error->get_error_message() );
 		$this->save_status_message( $message, 'error' );
-		do_action('ss_completed', 'error', $message);
 		return 'cancel';
 	}
 

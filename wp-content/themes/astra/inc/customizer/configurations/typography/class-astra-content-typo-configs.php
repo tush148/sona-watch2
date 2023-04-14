@@ -51,24 +51,18 @@ if ( ! class_exists( 'Astra_Content_Typo_Configs' ) ) {
 				array(
 					'name'        => ASTRA_THEME_SETTINGS . '[font-size-h1]',
 					'type'        => 'control',
+					'control'     => 'ast-responsive',
 					'section'     => 'section-content-typo',
 					'default'     => astra_get_option( 'font-size-h1' ),
 					'transport'   => 'postMessage',
 					'priority'    => 6,
-					'title'       => __( 'Font Size', 'astra' ),
-					'control'     => 'ast-responsive-slider',
-					'suffix'      => array( 'px', 'em' ),
+					'title'       => __( 'Size', 'astra' ),
 					'input_attrs' => array(
-						'px' => array(
-							'min'  => 0,
-							'step' => 1,
-							'max'  => 100,
-						),
-						'em' => array(
-							'min'  => 0,
-							'step' => 0.01,
-							'max'  => 20,
-						),
+						'min' => 0,
+					),
+					'units'       => array(
+						'px' => 'px',
+						'em' => 'em',
 					),
 				),
 
@@ -91,24 +85,18 @@ if ( ! class_exists( 'Astra_Content_Typo_Configs' ) ) {
 				array(
 					'name'        => ASTRA_THEME_SETTINGS . '[font-size-h2]',
 					'type'        => 'control',
+					'control'     => 'ast-responsive',
 					'section'     => 'section-content-typo',
 					'default'     => astra_get_option( 'font-size-h2' ),
 					'transport'   => 'postMessage',
 					'priority'    => 11,
-					'title'       => __( 'Font Size', 'astra' ),
-					'control'     => 'ast-responsive-slider',
-					'suffix'      => array( 'px', 'em' ),
+					'title'       => __( 'Size', 'astra' ),
 					'input_attrs' => array(
-						'px' => array(
-							'min'  => 0,
-							'step' => 1,
-							'max'  => 100,
-						),
-						'em' => array(
-							'min'  => 0,
-							'step' => 0.01,
-							'max'  => 20,
-						),
+						'min' => 0,
+					),
+					'units'       => array(
+						'px' => 'px',
+						'em' => 'em',
 					),
 				),
 
@@ -131,24 +119,18 @@ if ( ! class_exists( 'Astra_Content_Typo_Configs' ) ) {
 				array(
 					'name'        => ASTRA_THEME_SETTINGS . '[font-size-h3]',
 					'type'        => 'control',
+					'control'     => 'ast-responsive',
 					'section'     => 'section-content-typo',
 					'priority'    => 16,
 					'default'     => astra_get_option( 'font-size-h3' ),
 					'transport'   => 'postMessage',
-					'title'       => __( 'Font Size', 'astra' ),
-					'control'     => 'ast-responsive-slider',
-					'suffix'      => array( 'px', 'em' ),
+					'title'       => __( 'Size', 'astra' ),
 					'input_attrs' => array(
-						'px' => array(
-							'min'  => 0,
-							'step' => 1,
-							'max'  => 100,
-						),
-						'em' => array(
-							'min'  => 0,
-							'step' => 0.01,
-							'max'  => 20,
-						),
+						'min' => 0,
+					),
+					'units'       => array(
+						'px' => 'px',
+						'em' => 'em',
 					),
 				),
 
@@ -171,24 +153,18 @@ if ( ! class_exists( 'Astra_Content_Typo_Configs' ) ) {
 				array(
 					'name'        => ASTRA_THEME_SETTINGS . '[font-size-h4]',
 					'type'        => 'control',
+					'control'     => 'ast-responsive',
 					'section'     => 'section-content-typo',
 					'default'     => astra_get_option( 'font-size-h4' ),
 					'transport'   => 'postMessage',
 					'priority'    => 21,
-					'title'       => __( 'Font Size', 'astra' ),
-					'control'     => 'ast-responsive-slider',
-					'suffix'      => array( 'px', 'em' ),
+					'title'       => __( 'Size', 'astra' ),
 					'input_attrs' => array(
-						'px' => array(
-							'min'  => 0,
-							'step' => 1,
-							'max'  => 100,
-						),
-						'em' => array(
-							'min'  => 0,
-							'step' => 0.01,
-							'max'  => 20,
-						),
+						'min' => 0,
+					),
+					'units'       => array(
+						'px' => 'px',
+						'em' => 'em',
 					),
 				),
 
@@ -211,24 +187,18 @@ if ( ! class_exists( 'Astra_Content_Typo_Configs' ) ) {
 				array(
 					'name'        => ASTRA_THEME_SETTINGS . '[font-size-h5]',
 					'type'        => 'control',
+					'control'     => 'ast-responsive',
 					'section'     => 'section-content-typo',
 					'default'     => astra_get_option( 'font-size-h5' ),
 					'transport'   => 'postMessage',
 					'priority'    => 26,
-					'title'       => __( 'Font Size', 'astra' ),
-					'control'     => 'ast-responsive-slider',
-					'suffix'      => array( 'px', 'em' ),
+					'title'       => __( 'Size', 'astra' ),
 					'input_attrs' => array(
-						'px' => array(
-							'min'  => 0,
-							'step' => 1,
-							'max'  => 100,
-						),
-						'em' => array(
-							'min'  => 0,
-							'step' => 0.01,
-							'max'  => 20,
-						),
+						'min' => 0,
+					),
+					'units'       => array(
+						'px' => 'px',
+						'em' => 'em',
 					),
 				),
 
@@ -251,24 +221,18 @@ if ( ! class_exists( 'Astra_Content_Typo_Configs' ) ) {
 				array(
 					'name'        => ASTRA_THEME_SETTINGS . '[font-size-h6]',
 					'type'        => 'control',
+					'control'     => 'ast-responsive',
 					'section'     => 'section-content-typo',
 					'default'     => astra_get_option( 'font-size-h6' ),
 					'transport'   => 'postMessage',
 					'priority'    => 31,
-					'title'       => __( 'Font Size', 'astra' ),
-					'control'     => 'ast-responsive-slider',
-					'suffix'      => array( 'px', 'em' ),
+					'title'       => __( 'Size', 'astra' ),
 					'input_attrs' => array(
-						'px' => array(
-							'min'  => 0,
-							'step' => 1,
-							'max'  => 100,
-						),
-						'em' => array(
-							'min'  => 0,
-							'step' => 0.01,
-							'max'  => 20,
-						),
+						'min' => 0,
+					),
+					'units'       => array(
+						'px' => 'px',
+						'em' => 'em',
 					),
 				),
 			);
@@ -289,7 +253,7 @@ if ( ! class_exists( 'Astra_Content_Typo_Configs' ) ) {
 						'section'  => 'section-content-typo',
 						'priority' => 999,
 						'title'    => '',
-						'help'     => '<p>' . __( 'More Options Available in Astra Pro!', 'astra' ) . '</p><a href="' . astra_get_pro_url( ASTRA_PRO_UPGRADE_URL, 'customizer', 'learn-more', 'upgrade-to-pro' ) . '" class="button button-secondary"  target="_blank" rel="noopener">' . __( 'Learn More', 'astra' ) . '</a>',
+						'help'     => '<p>' . __( 'More Options Available in Astra Pro!', 'astra' ) . '</p><a href="' . astra_get_pro_url( 'https://wpastra.com/pro/', 'customizer', 'learn-more', 'upgrade-to-pro' ) . '" class="button button-secondary"  target="_blank" rel="noopener">' . __( 'Learn More', 'astra' ) . '</a>',
 						'settings' => array(),
 					),
 				);
@@ -304,4 +268,5 @@ if ( ! class_exists( 'Astra_Content_Typo_Configs' ) ) {
 }
 
 new Astra_Content_Typo_Configs();
+
 

@@ -2,7 +2,7 @@
 /**
  * Transparent Header - Dynamic CSS
  *
- * @package Astra
+ * @package Astra Addon
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

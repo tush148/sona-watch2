@@ -164,7 +164,7 @@ if ( ! class_exists( 'Astra_Edd' ) ) :
 		public function header_cart_icon_class( $classes ) {
 
 			if ( false === Astra_Builder_Helper::$is_header_footer_builder_active && ! defined( 'ASTRA_EXT_VER' ) ) {
-				return $classes;
+				return;
 			}
 
 			$header_cart_icon_style = astra_get_option( 'edd-header-cart-icon-style' );
@@ -737,7 +737,7 @@ if ( ! class_exists( 'Astra_Edd' ) ) :
 			}
 			$btn_bg_h_color = astra_get_option( 'button-bg-h-color', $link_h_color );
 
-			$btn_border_radius_fields = astra_get_option( 'button-radius-fields' );
+			$btn_border_radius = astra_get_option( 'button-radius' );
 
 			$cart_h_color = astra_get_foreground_color( $link_h_color );
 
@@ -776,13 +776,10 @@ if ( ! class_exists( 'Astra_Edd' ) ) :
 					),
 
 					'.ast-edd-site-header-cart .widget_edd_cart_widget .edd_checkout a, .widget_edd_cart_widget .edd_checkout a' => array(
-						'color'                      => $btn_h_color,
-						'border-color'               => $btn_bg_h_color,
-						'background-color'           => $btn_bg_h_color,
-						'border-top-left-radius'     => astra_responsive_spacing( $btn_border_radius_fields, 'top', 'desktop' ),
-						'border-top-right-radius'    => astra_responsive_spacing( $btn_border_radius_fields, 'right', 'desktop' ),
-						'border-bottom-right-radius' => astra_responsive_spacing( $btn_border_radius_fields, 'bottom', 'desktop' ),
-						'border-bottom-left-radius'  => astra_responsive_spacing( $btn_border_radius_fields, 'left', 'desktop' ),
+						'color'            => $btn_h_color,
+						'border-color'     => $btn_bg_h_color,
+						'background-color' => $btn_bg_h_color,
+						'border-radius'    => astra_get_css_value( $btn_border_radius, 'px' ),
 					),
 					'.site-header .ast-edd-site-header-cart .ast-edd-site-header-cart-widget .edd_checkout a, .site-header .ast-edd-site-header-cart .ast-edd-site-header-cart-widget .edd_checkout a:hover' => array(
 						'color' => $btn_color,
@@ -844,8 +841,9 @@ if ( ! class_exists( 'Astra_Edd' ) ) :
 			// Container.
 			$defaults['edd-content-layout'] = 'plain-container';
 
-			// Sidebar.
-			$defaults['edd-general-sidebar-layout'] = 'default';
+			// // Sidebar.
+			$defaults['edd-sidebar-layout']                = 'no-sidebar';
+			$defaults['edd-single-product-sidebar-layout'] = 'default';
 
 			// Edd Archive.
 			$defaults['edd-archive-grids'] = array(
@@ -985,31 +983,26 @@ if ( ! class_exists( 'Astra_Edd' ) ) :
 
 			if ( $is_edd_page ) {
 
-				// Global.
-				$edd_sidebar = astra_get_option( 'site-sidebar-layout' );
+				$edd_sidebar = astra_get_option( 'edd-sidebar-layout' );
 
 				if ( 'default' !== $edd_sidebar ) {
+
 					$sidebar_layout = $edd_sidebar;
 				}
 
-				// Customizer General.
-				$edd_customizer_sidebar = astra_get_option( 'edd-general-sidebar-layout' );
-
-				if ( 'default' !== $edd_customizer_sidebar ) {
-					$sidebar_layout = $edd_customizer_sidebar;
-				}
-
 				if ( $is_edd_single_product_page ) {
-					$edd_single_product_sidebar = astra_get_option( 'single-download-sidebar-layout' );
+					$edd_single_product_sidebar = astra_get_option( 'edd-single-product-sidebar-layout' );
 
 					if ( 'default' !== $edd_single_product_sidebar ) {
 						$sidebar_layout = $edd_single_product_sidebar;
+					} else {
+						$sidebar_layout = astra_get_option( 'site-sidebar-layout' );
 					}
 
 					$page_id            = get_the_ID();
 					$edd_sidebar_layout = get_post_meta( $page_id, 'site-sidebar-layout', true );
 				} elseif ( $is_edd_archive_page ) {
-					$edd_sidebar_layout = astra_get_option( 'archive-download-sidebar-layout' );
+					$edd_sidebar_layout = astra_get_option( 'edd-sidebar-layout' );
 				} else {
 					$edd_sidebar_layout = astra_get_option_meta( 'site-sidebar-layout', '', true );
 				}
@@ -1036,33 +1029,18 @@ if ( ! class_exists( 'Astra_Edd' ) ) :
 
 			if ( $is_edd_page ) {
 
-
-				// Global.
-				$edd_layout = astra_get_option( 'site-content-layout' );
+				$edd_layout = astra_get_option( 'edd-content-layout' );
 
 				if ( 'default' !== $edd_layout ) {
 
 					$layout = $edd_layout;
 				}
 
-				// Customizer General.
-				$edd_customizer_layout = astra_get_option( 'edd-content-layout' );
-
-				if ( 'default' !== $edd_customizer_layout ) {
-					$layout = $edd_customizer_layout;
-				}
-
 				if ( $is_edd_single_page ) {
-					$edd_single_product_layout = astra_get_option( 'single-download-content-layout' );
-
-					if ( 'default' !== $edd_single_product_layout ) {
-						$layout = $edd_single_product_layout;
-					}
-
 					$page_id         = get_the_ID();
 					$edd_page_layout = get_post_meta( $page_id, 'site-content-layout', true );
 				} elseif ( $is_edd_archive_page ) {
-					$edd_page_layout = astra_get_option( 'archive-download-content-layout' );
+					$edd_page_layout = astra_get_option( 'edd-content-layout' );
 				} else {
 					$edd_page_layout = astra_get_option_meta( 'site-content-layout', '', true );
 				}

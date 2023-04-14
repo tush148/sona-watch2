@@ -2,7 +2,7 @@
 /**
  * Sticky Header Extension
  *
- * @package Astra
+ * @package Astra Addon
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

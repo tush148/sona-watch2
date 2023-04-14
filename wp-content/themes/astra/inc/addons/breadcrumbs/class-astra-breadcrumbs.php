@@ -93,10 +93,6 @@ if ( ! class_exists( 'Astra_Breadcrumbs' ) ) {
 				$options['rank-math'] = 'Rank Math';
 			}
 
-			if ( function_exists( 'seopress_display_breadcrumbs' ) ) {
-				$options['seopress'] = 'SEOPress';
-			}
-
 			return $options;
 		}
 	}

@@ -162,35 +162,6 @@ final class Astra_Builder_Helper {
 	);
 
 	/**
-	 * Default button responsive spacing control value.
-	 *
-	 * @var string[][]
-	 */
-	public static $default_button_responsive_spacing = array(
-		'desktop'      => array(
-			'top'    => '12',
-			'right'  => '20',
-			'bottom' => '12',
-			'left'   => '20',
-		),
-		'tablet'       => array(
-			'top'    => '',
-			'right'  => '',
-			'bottom' => '',
-			'left'   => '',
-		),
-		'mobile'       => array(
-			'top'    => '',
-			'right'  => '',
-			'bottom' => '',
-			'left'   => '',
-		),
-		'desktop-unit' => 'px',
-		'tablet-unit'  => 'px',
-		'mobile-unit'  => 'px',
-	);
-
-	/**
 	 * Config Tablet device context.
 	 *
 	 * @var string[][]
@@ -327,7 +298,7 @@ final class Astra_Builder_Helper {
 	/**
 	 *  Check if migrated to new HFB.
 	 *
-	 * @var int|bool
+	 * @var int
 	 */
 	public static $is_header_footer_builder_active;
 
@@ -676,7 +647,7 @@ final class Astra_Builder_Helper {
 			'astra_header_desktop_items',
 			array(
 				'logo'    => array(
-					'name'    => __( 'Site Title & Logo', 'astra' ),
+					'name'    => __( 'Site Identity & Logo', 'astra' ),
 					'icon'    => 'admin-appearance',
 					'section' => 'title_tagline',
 					'delete'  => false,
@@ -739,7 +710,7 @@ final class Astra_Builder_Helper {
 			'astra_header_mobile_items',
 			array(
 				'logo'           => array(
-					'name'    => __( 'Site Title & Logo', 'astra' ),
+					'name'    => __( 'Site Identity & Logo', 'astra' ),
 					'icon'    => 'admin-appearance',
 					'section' => 'title_tagline',
 				),
@@ -944,9 +915,6 @@ final class Astra_Builder_Helper {
 	 * Adds support to render Mobile Popup Markup.
 	 */
 	public static function render_mobile_popup_markup() {
-		if ( ! self::is_component_loaded( 'mobile-trigger', 'header' ) && ! is_customize_preview() ) {
-			return;
-		}
 
 		$off_canvas_slide   = astra_get_option( 'off-canvas-slide' );
 		$mobile_header_type = astra_get_option( 'mobile-header-type' );
@@ -978,7 +946,7 @@ final class Astra_Builder_Helper {
 			<div class="ast-mobile-popup-overlay"></div>
 			<div class="ast-mobile-popup-inner">
 					<div class="ast-mobile-popup-header">
-						<button type="button" id="menu-toggle-close" class="menu-toggle-close" aria-label="Close menu" tabindex="0">
+						<button id="menu-toggle-close" class="menu-toggle-close" aria-label="Close menu">
 							<span class="ast-svg-iconset">
 								<?php echo Astra_Builder_UI_Controller::fetch_svg_icon( 'close' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 							</span>
@@ -1098,9 +1066,9 @@ final class Astra_Builder_Helper {
 	/**
 	 * Check if component placed on the builder.
 	 *
-	 * @param string $component_id component id.
-	 * @param string $builder_type builder type.
-	 * @param string $device Device type (mobile, desktop and both).
+	 * @param integer $component_id component id.
+	 * @param string  $builder_type builder type.
+	 * @param string  $device Device type (mobile, desktop and both).
 	 * @return bool
 	 */
 	public static function is_component_loaded( $component_id, $builder_type = 'header', $device = 'both' ) {

@@ -15,23 +15,19 @@
 
 	<?php astra_single_header_before(); ?>
 
-	<?php if ( apply_filters( 'astra_single_layout_one_banner_visibility', true ) ) { ?>
+	<header class="entry-header <?php astra_entry_header_class(); ?>">
 
-		<header class="entry-header <?php astra_entry_header_class(); ?>">
+		<?php astra_single_header_top(); ?>
 
-			<?php astra_single_header_top(); ?>
+		<?php astra_blog_post_thumbnail_and_title_order(); ?>
 
-			<?php astra_banner_elements_order(); ?>
+		<?php astra_single_header_bottom(); ?>
 
-			<?php astra_single_header_bottom(); ?>
-
-		</header><!-- .entry-header -->
-
-	<?php } ?>
+	</header><!-- .entry-header -->
 
 	<?php astra_single_header_after(); ?>
 
-	<div class="entry-content clear"
+	<div class="entry-content clear" 
 	<?php
 				echo astra_attr(
 					'article-entry-content-single-layout',

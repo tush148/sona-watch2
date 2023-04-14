@@ -20,15 +20,6 @@ add_filter( 'astra_theme_defaults', 'astra_hf_builder_customizer_defaults' );
  */
 function astra_hf_builder_customizer_defaults( $defaults ) {
 
-	$astra_options = Astra_Theme_Options::get_astra_options();
-
-	/**
-	 * Update Astra default color and typography values. To not update directly on existing users site, added backwards.
-	 *
-	 * @since 4.0.0
-	 */
-	$apply_new_default_color_typo_values = Astra_Dynamic_CSS::astra_check_default_color_typo();
-
 	/**
 	 * Header Builder - Desktop Defaults.
 	 */
@@ -90,7 +81,7 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	 */
 	$defaults['hb-header-main-layout-width'] = 'content';
 	$defaults['hb-header-height']            = array(
-		'desktop' => ( false === astra_check_is_structural_setup() ) ? 70 : 80,
+		'desktop' => 70,
 		'tablet'  => '',
 		'mobile'  => '',
 	);
@@ -334,8 +325,6 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 		'section-footer-menu-margin',
 		'section-primary-footer-builder-padding',
 		'section-primary-footer-builder-margin',
-		'section-header-woo-cart-padding',
-		'section-header-woo-cart-margin',
 	);
 
 	foreach ( $margin_defaults as $margin_default ) {
@@ -344,12 +333,12 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 
 	for ( $index = 1; $index <= Astra_Builder_Helper::$component_limit; $index++ ) {
 
-		$defaults = astra_prepare_button_defaults( $defaults, absint( $index ) );
-		$defaults = astra_prepare_html_defaults( $defaults, absint( $index ) );
-		$defaults = astra_prepare_social_icon_defaults( $defaults, absint( $index ) );
-		$defaults = astra_prepare_widget_defaults( $defaults, absint( $index ) );
-		$defaults = astra_prepare_menu_defaults( $defaults, absint( $index ) );
-		$defaults = astra_prepare_divider_defaults( $defaults, absint( $index ) );
+		$defaults = prepare_button_defaults( $defaults, $index );
+		$defaults = prepare_html_defaults( $defaults, $index );
+		$defaults = prepare_social_icon_defaults( $defaults, $index );
+		$defaults = prepare_widget_defaults( $defaults, $index );
+		$defaults = prepare_menu_defaults( $defaults, $index );
+		$defaults = prepare_divider_defaults( $defaults, $index );
 	}
 
 	/**
@@ -436,7 +425,7 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	);
 	$defaults['hbb-footer-bg-obj-responsive'] = array(
 		'desktop' => array(
-			'background-color'      => $apply_new_default_color_typo_values ? 'var(--ast-global-color-5)' : '#eeeeee',
+			'background-color'      => '#eeeeee',
 			'background-image'      => '',
 			'background-repeat'     => 'repeat',
 			'background-position'   => 'center center',
@@ -486,8 +475,6 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 			'background-attachment' => 'scroll',
 		),
 	);
-	$defaults['hbb-footer-top-border-color']  = $apply_new_default_color_typo_values ? 'var(--ast-global-color-6)' : '';
-	$defaults['hbb-footer-separator']         = $apply_new_default_color_typo_values ? 1 : '';
 
 	/**
 	 * Header Margin defaults.
@@ -580,32 +567,26 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	/**
 	 * Footer Copyright.
 	 */
-	$defaults['footer-copyright-editor']              = 'Copyright [copyright] [current_year] [site_title] | Powered by [theme_author]';
-	$defaults['footer-copyright-color']               = $apply_new_default_color_typo_values ? 'var(--ast-global-color-3)' : '';
-	$defaults['line-height-section-footer-copyright'] = 2;
-	$defaults['footer-copyright-alignment']           = array(
+	$defaults['footer-copyright-editor']                 = 'Copyright [copyright] [current_year] [site_title] | Powered by [theme_author]';
+	$defaults['footer-copyright-color']                  = '#3a3a3a';
+	$defaults['line-height-section-footer-copyright']    = 2;
+	$defaults['footer-copyright-alignment']              = array(
 		'desktop' => 'center',
 		'tablet'  => 'center',
 		'mobile'  => 'center',
 	);
-	$defaults['font-size-section-footer-copyright']   = array(
-		'desktop'      => $apply_new_default_color_typo_values ? 16 : '',
+	$defaults['font-size-section-footer-copyright']      = array(
+		'desktop'      => '',
 		'tablet'       => '',
 		'mobile'       => '',
 		'desktop-unit' => 'px',
 		'tablet-unit'  => 'px',
 		'mobile-unit'  => 'px',
 	);
-	$defaults['font-weight-section-footer-copyright'] = 'inherit';
-	$defaults['font-family-section-footer-copyright'] = 'inherit';
-	$defaults['font-extras-section-footer-copyright'] = array(
-		'line-height'         => ! isset( $astra_options['font-extras-section-footer-copyright'] ) && isset( $astra_options['line-height-section-footer-copyright'] ) ? $astra_options['line-height-section-footer-copyright'] : '',
-		'line-height-unit'    => 'em',
-		'letter-spacing'      => '',
-		'letter-spacing-unit' => 'px',
-		'text-transform'      => ! isset( $astra_options['font-extras-section-footer-copyright'] ) && isset( $astra_options['text-transform-section-footer-copyright'] ) ? $astra_options['text-transform-section-footer-copyright'] : '',
-		'text-decoration'     => '',
-	);
+	$defaults['font-weight-section-footer-copyright']    = 'inherit';
+	$defaults['font-family-section-footer-copyright']    = 'inherit';
+	$defaults['text-transform-section-footer-copyright'] = '';
+	$defaults['line-height-section-footer-copyright']    = '';
 
 	$defaults['footer-menu-alignment'] = array(
 		'desktop' => 'center',
@@ -774,7 +755,7 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 		'mobile'  => '',
 	);
 
-	$defaults['footer-menu-font-size']   = array(
+	$defaults['footer-menu-font-size']      = array(
 		'desktop'      => '',
 		'tablet'       => '',
 		'mobile'       => '',
@@ -782,16 +763,10 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 		'tablet-unit'  => 'px',
 		'mobile-unit'  => 'px',
 	);
-	$defaults['footer-menu-font-weight'] = 'inherit';
-	$defaults['footer-menu-font-family'] = 'inherit';
-	$defaults['footer-menu-font-extras'] = array(
-		'line-height'         => ! isset( $astra_options['footer-menu-font-extras'] ) && isset( $astra_options['footer-menu-line-height'] ) ? $astra_options['footer-menu-line-height'] : '',
-		'line-height-unit'    => 'em',
-		'letter-spacing'      => '',
-		'letter-spacing-unit' => 'px',
-		'text-transform'      => ! isset( $astra_options['footer-menu-font-extras'] ) && isset( $astra_options['footer-menu-text-transform'] ) ? $astra_options['footer-menu-text-transform'] : '',
-		'text-decoration'     => '',
-	);
+	$defaults['footer-menu-font-weight']    = 'inherit';
+	$defaults['footer-menu-font-family']    = 'inherit';
+	$defaults['footer-menu-text-transform'] = '';
+	$defaults['footer-menu-line-height']    = '';
 
 	$defaults['footer-main-menu-spacing'] = array(
 		'desktop'      => array(
@@ -829,31 +804,6 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	);
 	$defaults['mobile-header-toggle-border-radius']   = 2;
 
-	$mobile_header_toggle_border_radius_fields             = ! isset( $astra_options['mobile-header-toggle-border-radius-fields'] ) && isset( $astra_options['mobile-header-toggle-border-radius'] ) ? $astra_options['mobile-header-toggle-border-radius'] : '';
-	$defaults['mobile-header-toggle-border-radius-fields'] = array(
-		'desktop'      => array(
-			'top'    => $mobile_header_toggle_border_radius_fields,
-			'right'  => $mobile_header_toggle_border_radius_fields,
-			'bottom' => $mobile_header_toggle_border_radius_fields,
-			'left'   => $mobile_header_toggle_border_radius_fields,
-		),
-		'tablet'       => array(
-			'top'    => '',
-			'right'  => '',
-			'bottom' => '',
-			'left'   => '',
-		),
-		'mobile'       => array(
-			'top'    => '',
-			'right'  => '',
-			'bottom' => '',
-			'left'   => '',
-		),
-		'desktop-unit' => 'px',
-		'tablet-unit'  => 'px',
-		'mobile-unit'  => 'px',
-	);
-
 	/**
 	 * Mobile trigger - Label Typography.
 	 */
@@ -862,37 +812,6 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	$defaults['mobile-header-label-text-transform'] = '';
 	$defaults['mobile-header-label-line-height']    = '';
 	$defaults['mobile-header-label-font-size']      = '';
-
-	/**
-	 * Global Color Palette.
-	 */
-	$defaults['global-color-palette'] = $apply_new_default_color_typo_values ? array(
-		'palette' => array(
-			'#046bd2',
-			'#045cb4',
-			'#1e293b',
-			'#334155',
-			'#f9fafb',
-			'#FFFFFF',
-			'#e2e8f0',
-			'#cbd5e1',
-			'#94a3b8',
-		),
-	)
-	:
-	array(
-		'palette' => array(
-			'#0170B9',
-			'#3a3a3a',
-			'#3a3a3a',
-			'#4B4F58',
-			'#F5F5F5',
-			'#FFFFFF',
-			'#E5E5E5',
-			'#424242',
-			'#000000',
-		),
-	);
 
 	/**
 	* Mobile Menu
@@ -916,7 +835,7 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 			'background-attachment' => 'scroll',
 		),
 		'tablet'  => array(
-			'background-color'      => $apply_new_default_color_typo_values ? 'var(--ast-global-color-5)' : '',
+			'background-color'      => '',
 			'background-image'      => '',
 			'background-repeat'     => 'repeat',
 			'background-position'   => 'center center',
@@ -934,32 +853,32 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	);
 
 	$defaults['header-mobile-menu-color-responsive'] = array(
-		'desktop' => $apply_new_default_color_typo_values ? 'var(--ast-global-color-3)' : '',
-		'tablet'  => $apply_new_default_color_typo_values ? 'var(--ast-global-color-3)' : '',
-		'mobile'  => '',
-	);
-
-	$defaults['header-mobile-menu-h-color-responsive'] = array(
-		'desktop' => $apply_new_default_color_typo_values ? 'var(--ast-global-color-1)' : '',
-		'tablet'  => $apply_new_default_color_typo_values ? 'var(--ast-global-color-1)' : '',
-		'mobile'  => '',
-	);
-
-	$defaults['header-mobile-menu-a-color-responsive'] = array(
-		'desktop' => $apply_new_default_color_typo_values ? 'var(--ast-global-color-1)' : '',
-		'tablet'  => $apply_new_default_color_typo_values ? 'var(--ast-global-color-1)' : '',
+		'desktop' => '',
+		'tablet'  => '',
 		'mobile'  => '',
 	);
 
 	$defaults['header-mobile-menu-h-bg-color-responsive'] = array(
 		'desktop' => '',
-		'tablet'  => $apply_new_default_color_typo_values ? 'var(--ast-global-color-4)' : '',
+		'tablet'  => '',
+		'mobile'  => '',
+	);
+
+	$defaults['header-mobile-menu-h-color-responsive'] = array(
+		'desktop' => '',
+		'tablet'  => '',
 		'mobile'  => '',
 	);
 
 	$defaults['header-mobile-menu-a-bg-color-responsive'] = array(
 		'desktop' => '',
-		'tablet'  => $apply_new_default_color_typo_values ? 'var(--ast-global-color-4)' : '',
+		'tablet'  => '',
+		'mobile'  => '',
+	);
+
+	$defaults['header-mobile-menu-a-color-responsive'] = array(
+		'desktop' => '',
+		'tablet'  => '',
 		'mobile'  => '',
 	);
 
@@ -982,7 +901,7 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 		/**
 		 * Menu - Typography.
 		*/
-	$defaults['header-mobile-menu-font-size'] = array(
+	$defaults['header-mobile-menu-font-size']      = array(
 		'desktop'      => '',
 		'tablet'       => '',
 		'mobile'       => '',
@@ -990,88 +909,27 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 		'tablet-unit'  => 'px',
 		'mobile-unit'  => 'px',
 	);
-
-	$defaults['font-extras-header-mobile-menu'] = array(
-		'line-height'         => ! isset( $astra_options['font-extras-header-mobile-menu'] ) && isset( $astra_options['header-mobile-menu-line-height'] ) ? $astra_options['header-mobile-menu-line-height'] : '',
-		'line-height-unit'    => 'em',
-		'letter-spacing'      => '',
-		'letter-spacing-unit' => 'px',
-		'text-transform'      => ! isset( $astra_options['font-extras-header-mobile-menu'] ) && isset( $astra_options['header-mobile-menu-text-transform'] ) ? $astra_options['header-mobile-menu-text-transform'] : '',
-		'text-decoration'     => '',
-	);
+	$defaults['header-mobile-menu-font-weight']    = 'inherit';
+	$defaults['header-mobile-menu-font-family']    = 'inherit';
+	$defaults['header-mobile-menu-text-transform'] = '';
+	$defaults['header-mobile-menu-line-height']    = '';
 
 	/**
 	 * Woo-Cart.
 	 */
-	$defaults['woo-header-cart-click-action']              = 'default';
-	$defaults['woo-slide-in-cart-width']                   = array(
-		'desktop'      => 35,
-		'tablet'       => '',
-		'mobile'       => '',
-		'desktop-unit' => '%',
-		'tablet-unit'  => '%',
-		'mobile-unit'  => '%',
-	);
-	$defaults['woo-header-cart-icon-total-label-position'] = array(
-		'desktop' => '',
-		'tablet'  => '',
-		'mobile'  => '',
-	);
-	$defaults['header-woo-cart-icon-size']                 = array(
-		'desktop' => '',
-		'tablet'  => '',
-		'mobile'  => '',
-	);
-	$defaults['woo-header-cart-icon']                      = 'default';
-	$defaults['woo-header-cart-icon-style']                = 'outline';
-	$defaults['woo-desktop-cart-flyout-direction']         = 'right';
-	$defaults['header-woo-cart-icon-color']                = '';
-	$defaults['transparent-header-woo-cart-icon-color']    = '';
-	$defaults['header-woo-cart-icon-hover-color']          = '';
-	$defaults['woo-header-cart-border-width']              = 2;
-	$woo_header_cart_border_radius                         = ! isset( $astra_options['woo-header-cart-icon-radius-fields'] ) && isset( $astra_options['woo-header-cart-icon-radius'] ) ? $astra_options['woo-header-cart-icon-radius'] : '';
-	$defaults['woo-header-cart-icon-radius-fields']        = array(
-		'desktop'      => array(
-			'top'    => $woo_header_cart_border_radius,
-			'right'  => $woo_header_cart_border_radius,
-			'bottom' => $woo_header_cart_border_radius,
-			'left'   => $woo_header_cart_border_radius,
-		),
-		'tablet'       => array(
-			'top'    => '',
-			'right'  => '',
-			'bottom' => '',
-			'left'   => '',
-		),
-		'mobile'       => array(
-			'top'    => '',
-			'right'  => '',
-			'bottom' => '',
-			'left'   => '',
-		),
-		'desktop-unit' => 'px',
-		'tablet-unit'  => 'px',
-		'mobile-unit'  => 'px',
-	);
-	$defaults['woo-header-cart-badge-display']             = true;
-	// Woo Cart - Dynamic label default value.
-	$defaults['woo-header-cart-label-display'] = '';
+	$defaults['woo-header-cart-icon-style']             = 'outline';
+	$defaults['header-woo-cart-icon-color']             = '';
+	$defaults['transparent-header-woo-cart-icon-color'] = '';
+	$defaults['woo-header-cart-icon-radius']            = 3;
+	$defaults['woo-header-cart-total-display']          = true;
+	$defaults['woo-header-cart-title-display']          = true;
 
 	// Cart tray > General Color styles.
-	$defaults['header-woo-cart-text-color']             = '';
-	$defaults['header-woo-cart-link-color']             = '';
-	$defaults['header-woo-cart-background-color']       = array(
-		'desktop' => '',
-		'tablet'  => '',
-		'mobile'  => '',
-	);
-	$defaults['header-woo-cart-background-hover-color'] = array(
-		'desktop' => '',
-		'tablet'  => '',
-		'mobile'  => '',
-	);
-	$defaults['header-woo-cart-separator-color']        = '';
-	$defaults['header-woo-cart-link-hover-color']       = '';
+	$defaults['header-woo-cart-text-color']       = '';
+	$defaults['header-woo-cart-link-color']       = '';
+	$defaults['header-woo-cart-background-color'] = '';
+	$defaults['header-woo-cart-separator-color']  = '';
+	$defaults['header-woo-cart-link-hover-color'] = '';
 
 	// Cart tray > Cart Button styles.
 	$defaults['header-woo-cart-btn-text-color']       = '';
@@ -1166,10 +1024,11 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
  * @param array   $defaults defaults.
  * @param integer $index index.
  */
-function astra_prepare_divider_defaults( $defaults, $index ) {
+function prepare_divider_defaults( $defaults, $index ) {
 
 	$defaults[ 'section-hb-divider-' . $index . '-margin' ] = Astra_Builder_Helper::$default_responsive_spacing;
 	$defaults[ 'section-fb-divider-' . $index . '-margin' ] = Astra_Builder_Helper::$default_responsive_spacing;
+
 
 	return $defaults;
 }
@@ -1180,36 +1039,21 @@ function astra_prepare_divider_defaults( $defaults, $index ) {
  * @param array   $defaults defaults.
  * @param integer $index index.
  */
-function astra_prepare_button_defaults( $defaults, $index ) {
-
-	/**
-	 * Update Astra default color and typography values. To not update directly on existing users site, added backwards.
-	 *
-	 * @since 4.0.0
-	 */
-	$apply_new_default_color_typo_values = Astra_Dynamic_CSS::astra_check_default_color_typo();
-
-	$astra_options = Astra_Theme_Options::get_astra_options();
+function prepare_button_defaults( $defaults, $index ) {
 
 	$_prefix = 'button' . $index;
 
-	$defaults[ 'header-' . $_prefix . '-text' ]                 = __( 'Button', 'astra' );
-	$defaults[ 'header-' . $_prefix . '-link-option' ]          = array(
+	$defaults[ 'header-' . $_prefix . '-text' ]           = __( 'Button', 'astra' );
+	$defaults[ 'header-' . $_prefix . '-link-option' ]    = array(
 		'url'      => apply_filters( 'astra_site_url', 'https://www.wpastra.com' ),
 		'new_tab'  => false,
 		'link_rel' => '',
 	);
-	$defaults[ 'header-' . $_prefix . '-font-family' ]          = 'inherit';
-	$defaults[ 'header-' . $_prefix . '-font-weight' ]          = 'inherit';
-	$defaults[ 'header-' . $_prefix . '-font-extras' ]          = array(
-		'line-height'         => ! isset( $astra_options[ 'header-' . $_prefix . '-font-extras' ] ) && isset( $astra_options[ 'header-' . $_prefix . '-line-height' ] ) ? $astra_options[ 'header-' . $_prefix . '-line-height' ] : '',
-		'line-height-unit'    => 'em',
-		'letter-spacing'      => '',
-		'letter-spacing-unit' => 'px',
-		'text-transform'      => ! isset( $astra_options[ 'header-' . $_prefix . '-font-extras' ] ) && isset( $astra_options[ 'header-' . $_prefix . '-text-transform' ] ) ? $astra_options[ 'header-' . $_prefix . '-text-transform' ] : '',
-		'text-decoration'     => '',
-	);
-	$defaults[ 'header-' . $_prefix . '-font-size' ]            = array(
+	$defaults[ 'header-' . $_prefix . '-font-family' ]    = 'inherit';
+	$defaults[ 'header-' . $_prefix . '-font-weight' ]    = 'inherit';
+	$defaults[ 'header-' . $_prefix . '-text-transform' ] = '';
+	$defaults[ 'header-' . $_prefix . '-line-height' ]    = '';
+	$defaults[ 'header-' . $_prefix . '-font-size' ]      = array(
 		'desktop'      => '',
 		'tablet'       => '',
 		'mobile'       => '',
@@ -1217,27 +1061,27 @@ function astra_prepare_button_defaults( $defaults, $index ) {
 		'tablet-unit'  => 'px',
 		'mobile-unit'  => 'px',
 	);
-	$defaults[ 'header-' . $_prefix . '-text-color' ]           = array(
+	$defaults[ 'header-' . $_prefix . '-text-color' ]     = array(
 		'desktop' => '',
 		'tablet'  => '',
 		'mobile'  => '',
 	);
-	$defaults[ 'header-' . $_prefix . '-back-color' ]           = array(
+	$defaults[ 'header-' . $_prefix . '-back-color' ]     = array(
 		'desktop' => '',
 		'tablet'  => '',
 		'mobile'  => '',
 	);
-	$defaults[ 'header-' . $_prefix . '-text-h-color' ]         = array(
+	$defaults[ 'header-' . $_prefix . '-text-h-color' ]   = array(
 		'desktop' => '',
 		'tablet'  => '',
 		'mobile'  => '',
 	);
-	$defaults[ 'header-' . $_prefix . '-back-h-color' ]         = array(
+	$defaults[ 'header-' . $_prefix . '-back-h-color' ]   = array(
 		'desktop' => '',
 		'tablet'  => '',
 		'mobile'  => '',
 	);
-	$defaults[ 'header-' . $_prefix . '-padding' ]              = array(
+	$defaults[ 'header-' . $_prefix . '-padding' ]        = array(
 		'desktop'      => array(
 			'top'    => '',
 			'right'  => '',
@@ -1260,62 +1104,37 @@ function astra_prepare_button_defaults( $defaults, $index ) {
 		'tablet-unit'  => 'px',
 		'mobile-unit'  => 'px',
 	);
-	$defaults[ 'header-' . $_prefix . '-border-size' ]          = array(
+	$defaults[ 'header-' . $_prefix . '-border-size' ]    = array(
 		'top'    => '',
 		'right'  => '',
 		'bottom' => '',
 		'left'   => '',
 	);
-	$defaults[ 'header-' . $_prefix . '-border-color' ]         = array(
+	$defaults[ 'header-' . $_prefix . '-border-color' ]   = array(
 		'desktop' => '',
 		'tablet'  => '',
 		'mobile'  => '',
 	);
-	$header_button_border_radius_fields                         = ! isset( $astra_options[ 'header-' . $_prefix . '-border-radius-fields' ] ) && isset( $astra_options[ 'header-' . $_prefix . '-border-radius' ] ) ? $astra_options[ 'header-' . $_prefix . '-border-radius' ] : '';
-	$defaults[ 'header-' . $_prefix . '-border-radius-fields' ] = array(
-		'desktop'      => array(
-			'top'    => $header_button_border_radius_fields,
-			'right'  => $header_button_border_radius_fields,
-			'bottom' => $header_button_border_radius_fields,
-			'left'   => $header_button_border_radius_fields,
-		),
-		'tablet'       => array(
-			'top'    => '',
-			'right'  => '',
-			'bottom' => '',
-			'left'   => '',
-		),
-		'mobile'       => array(
-			'top'    => '',
-			'right'  => '',
-			'bottom' => '',
-			'left'   => '',
-		),
-		'desktop-unit' => 'px',
-		'tablet-unit'  => 'px',
-		'mobile-unit'  => 'px',
-	);
+	$defaults[ 'header-' . $_prefix . '-border-radius' ]  = '';
 
-	$defaults[ 'header-' . $_prefix . '-border-radius' ] = '';
-
-	$defaults[ 'section-hb-button-' . $index . '-padding' ]   = $apply_new_default_color_typo_values ? Astra_Builder_Helper::$default_button_responsive_spacing : Astra_Builder_Helper::$default_responsive_spacing;
+	$defaults[ 'section-hb-button-' . $index . '-padding' ]   = Astra_Builder_Helper::$default_responsive_spacing;
 	$defaults[ 'section-hb-button-' . $index . '-margin' ]    = Astra_Builder_Helper::$default_responsive_spacing;
 	$defaults[ 'sticky-header-button' . $index . '-padding' ] = Astra_Builder_Helper::$default_responsive_spacing;
 
 
 	$_prefix = 'button' . $index;
 
-	$defaults[ 'footer-' . $_prefix . '-text' ]                 = __( 'Button', 'astra' );
-	$defaults[ 'footer-' . $_prefix . '-link-option' ]          = array(
+	$defaults[ 'footer-' . $_prefix . '-text' ]           = __( 'Button', 'astra' );
+	$defaults[ 'footer-' . $_prefix . '-link-option' ]    = array(
 		'url'      => apply_filters( 'astra_site_url', 'https://www.wpastra.com' ),
 		'new_tab'  => false,
 		'link_rel' => '',
 	);
-	$defaults[ 'footer-' . $_prefix . '-font-family' ]          = 'inherit';
-	$defaults[ 'footer-' . $_prefix . '-font-weight' ]          = 'inherit';
-	$defaults[ 'footer-' . $_prefix . '-text-transform' ]       = '';
-	$defaults[ 'footer-' . $_prefix . '-line-height' ]          = '';
-	$defaults[ 'footer-' . $_prefix . '-font-size' ]            = array(
+	$defaults[ 'footer-' . $_prefix . '-font-family' ]    = 'inherit';
+	$defaults[ 'footer-' . $_prefix . '-font-weight' ]    = 'inherit';
+	$defaults[ 'footer-' . $_prefix . '-text-transform' ] = '';
+	$defaults[ 'footer-' . $_prefix . '-line-height' ]    = '';
+	$defaults[ 'footer-' . $_prefix . '-font-size' ]      = array(
 		'desktop'      => '',
 		'tablet'       => '',
 		'mobile'       => '',
@@ -1323,27 +1142,27 @@ function astra_prepare_button_defaults( $defaults, $index ) {
 		'tablet-unit'  => 'px',
 		'mobile-unit'  => 'px',
 	);
-	$defaults[ 'footer-' . $_prefix . '-text-color' ]           = array(
+	$defaults[ 'footer-' . $_prefix . '-text-color' ]     = array(
 		'desktop' => '',
 		'tablet'  => '',
 		'mobile'  => '',
 	);
-	$defaults[ 'footer-' . $_prefix . '-back-color' ]           = array(
+	$defaults[ 'footer-' . $_prefix . '-back-color' ]     = array(
 		'desktop' => '',
 		'tablet'  => '',
 		'mobile'  => '',
 	);
-	$defaults[ 'footer-' . $_prefix . '-text-h-color' ]         = array(
+	$defaults[ 'footer-' . $_prefix . '-text-h-color' ]   = array(
 		'desktop' => '',
 		'tablet'  => '',
 		'mobile'  => '',
 	);
-	$defaults[ 'footer-' . $_prefix . '-back-h-color' ]         = array(
+	$defaults[ 'footer-' . $_prefix . '-back-h-color' ]   = array(
 		'desktop' => '',
 		'tablet'  => '',
 		'mobile'  => '',
 	);
-	$defaults[ 'footer-' . $_prefix . '-padding' ]              = array(
+	$defaults[ 'footer-' . $_prefix . '-padding' ]        = array(
 		'desktop'      => array(
 			'top'    => '',
 			'right'  => '',
@@ -1366,42 +1185,19 @@ function astra_prepare_button_defaults( $defaults, $index ) {
 		'tablet-unit'  => 'px',
 		'mobile-unit'  => 'px',
 	);
-	$defaults[ 'footer-' . $_prefix . '-border-size' ]          = array(
+	$defaults[ 'footer-' . $_prefix . '-border-size' ]    = array(
 		'top'    => '',
 		'right'  => '',
 		'bottom' => '',
 		'left'   => '',
 	);
-	$defaults[ 'footer-' . $_prefix . '-border-color' ]         = array(
+	$defaults[ 'footer-' . $_prefix . '-border-color' ]   = array(
 		'desktop' => '',
 		'tablet'  => '',
 		'mobile'  => '',
 	);
-	$footer_button_border_radius_fields                         = ! isset( $astra_options[ 'footer-' . $_prefix . '-border-radius-fields' ] ) && isset( $astra_options[ 'footer-' . $_prefix . '-border-radius' ] ) ? $astra_options[ 'footer-' . $_prefix . '-border-radius' ] : '';
-	$defaults[ 'footer-' . $_prefix . '-border-radius-fields' ] = array(
-		'desktop'      => array(
-			'top'    => $footer_button_border_radius_fields,
-			'right'  => $footer_button_border_radius_fields,
-			'bottom' => $footer_button_border_radius_fields,
-			'left'   => $footer_button_border_radius_fields,
-		),
-		'tablet'       => array(
-			'top'    => '',
-			'right'  => '',
-			'bottom' => '',
-			'left'   => '',
-		),
-		'mobile'       => array(
-			'top'    => '',
-			'right'  => '',
-			'bottom' => '',
-			'left'   => '',
-		),
-		'desktop-unit' => 'px',
-		'tablet-unit'  => 'px',
-		'mobile-unit'  => 'px',
-	);
-	$defaults[ 'footer-button-' . $index . '-alignment' ]       = array(
+	$defaults[ 'footer-' . $_prefix . '-border-radius' ]  = '';
+	$defaults[ 'footer-button-' . $index . '-alignment' ] = array(
 		'desktop' => 'center',
 		'tablet'  => 'center',
 		'mobile'  => 'center',
@@ -1419,9 +1215,7 @@ function astra_prepare_button_defaults( $defaults, $index ) {
  * @param array   $defaults defaults.
  * @param integer $index index.
  */
-function astra_prepare_html_defaults( $defaults, $index ) {
-
-	$astra_options = Astra_Theme_Options::get_astra_options();
+function prepare_html_defaults( $defaults, $index ) {
 
 	$_section = 'section-hb-html-' . $index;
 
@@ -1451,16 +1245,12 @@ function astra_prepare_html_defaults( $defaults, $index ) {
 	);
 	$defaults[ 'font-weight-' . $_section ]               = 'inherit';
 	$defaults[ 'font-family-' . $_section ]               = 'inherit';
-	$defaults[ 'font-extras-' . $_section ]               = array(
-		'line-height'         => ! isset( $astra_options[ 'font-extras-' . $_section ] ) && isset( $astra_options[ 'line-height-' . $_section ] ) ? $astra_options[ 'line-height-' . $_section ] : '',
-		'line-height-unit'    => 'em',
-		'letter-spacing'      => '',
-		'letter-spacing-unit' => 'px',
-		'text-transform'      => ! isset( $astra_options[ 'font-extras-' . $_section ] ) && isset( $astra_options[ 'text-transform-' . $_section ] ) ? $astra_options[ 'text-transform-' . $_section ] : '',
-		'text-decoration'     => '',
-	);
+	$defaults[ 'line-height-' . $_section ]               = '';
+	$defaults[ 'text-transform-' . $_section ]            = '';
 
 	$defaults[ 'section-hb-html-' . $index . '-margin' ] = Astra_Builder_Helper::$default_responsive_spacing;
+
+
 
 	$_section = 'section-fb-html-' . $index;
 
@@ -1503,14 +1293,8 @@ function astra_prepare_html_defaults( $defaults, $index ) {
 	);
 	$defaults[ 'font-weight-' . $_section ]               = 'inherit';
 	$defaults[ 'font-family-' . $_section ]               = 'inherit';
-	$defaults[ 'font-extras-' . $_section ]               = array(
-		'line-height'         => ! isset( $astra_options[ 'font-extras-' . $_section ] ) && isset( $astra_options[ 'line-height-' . $_section ] ) ? $astra_options[ 'line-height-' . $_section ] : '',
-		'line-height-unit'    => 'em',
-		'letter-spacing'      => '',
-		'letter-spacing-unit' => 'px',
-		'text-transform'      => ! isset( $astra_options[ 'font-extras-' . $_section ] ) && isset( $astra_options[ 'text-transform-' . $_section ] ) ? $astra_options[ 'text-transform-' . $_section ] : '',
-		'text-decoration'     => '',
-	);
+	$defaults[ 'text-transform-' . $_section ]            = '';
+	$defaults[ 'line-height-' . $_section ]               = '';
 
 	$defaults[ 'section-fb-html-' . $index . '-margin' ] = Astra_Builder_Helper::$default_responsive_spacing;
 
@@ -1523,9 +1307,7 @@ function astra_prepare_html_defaults( $defaults, $index ) {
  * @param array   $defaults defaults.
  * @param integer $index index.
  */
-function astra_prepare_social_icon_defaults( $defaults, $index ) {
-
-	$astra_options = Astra_Theme_Options::get_astra_options();
+function prepare_social_icon_defaults( $defaults, $index ) {
 
 	$defaults[ 'header-social-' . $index . '-space' ]          = array(
 		'desktop' => '',
@@ -1538,29 +1320,7 @@ function astra_prepare_social_icon_defaults( $defaults, $index ) {
 		'tablet'  => '',
 		'mobile'  => '',
 	);
-	$defaults[ 'header-social-' . $index . '-radius-fields' ]  = array(
-		'desktop'      => array(
-			'top'    => ! isset( $astra_options[ 'header-social-' . $index . '-radius' ] ) ? '' : $astra_options[ 'header-social-' . $index . '-radius' ],
-			'right'  => ! isset( $astra_options[ 'header-social-' . $index . '-radius' ] ) ? '' : $astra_options[ 'header-social-' . $index . '-radius' ],
-			'bottom' => ! isset( $astra_options[ 'header-social-' . $index . '-radius' ] ) ? '' : $astra_options[ 'header-social-' . $index . '-radius' ],
-			'left'   => ! isset( $astra_options[ 'header-social-' . $index . '-radius' ] ) ? '' : $astra_options[ 'header-social-' . $index . '-radius' ],
-		),
-		'tablet'       => array(
-			'top'    => '',
-			'right'  => '',
-			'bottom' => '',
-			'left'   => '',
-		),
-		'mobile'       => array(
-			'top'    => '',
-			'right'  => '',
-			'bottom' => '',
-			'left'   => '',
-		),
-		'desktop-unit' => 'px',
-		'tablet-unit'  => 'px',
-		'mobile-unit'  => 'px',
-	);
+	$defaults[ 'header-social-' . $index . '-radius' ]         = '';
 	$defaults[ 'header-social-' . $index . '-color' ]          = '';
 	$defaults[ 'header-social-' . $index . '-h-color' ]        = '';
 	$defaults[ 'header-social-' . $index . '-bg-color' ]       = '';
@@ -1692,10 +1452,7 @@ function astra_prepare_social_icon_defaults( $defaults, $index ) {
  * @param array   $defaults defaults.
  * @param integer $index index.
  */
-function astra_prepare_widget_defaults( $defaults, $index ) {
-
-	$astra_options                       = Astra_Theme_Options::get_astra_options();
-	$apply_new_default_color_typo_values = Astra_Dynamic_CSS::astra_check_default_color_typo();
+function prepare_widget_defaults( $defaults, $index ) {
 
 	// Widget Header defaults.
 
@@ -1722,44 +1479,32 @@ function astra_prepare_widget_defaults( $defaults, $index ) {
 	);
 
 	// Title Typography.
-	$defaults[ 'header-widget-' . $index . '-font-family' ] = 'inherit';
-	$defaults[ 'header-widget-' . $index . '-font-weight' ] = 'inherit';
-	$defaults[ 'header-widget-' . $index . '-font-size' ]   = array(
+	$defaults[ 'header-widget-' . $index . '-font-family' ]    = 'inherit';
+	$defaults[ 'header-widget-' . $index . '-font-weight' ]    = 'inherit';
+	$defaults[ 'header-widget-' . $index . '-text-transform' ] = '';
+	$defaults[ 'header-widget-' . $index . '-line-height' ]    = '';
+	$defaults[ 'header-widget-' . $index . '-font-size' ]      = array(
 		'desktop'      => '',
 		'tablet'       => '',
 		'mobile'       => '',
 		'desktop-unit' => 'px',
 		'tablet-unit'  => 'px',
 		'mobile-unit'  => 'px',
-	);
-	$defaults[ 'header-widget-' . $index . '-font-extras' ] = array(
-		'line-height'         => ! isset( $astra_options[ 'header-widget-' . $index . '-font-extras' ] ) && isset( $astra_options[ 'header-widget-' . $index . '-line-height' ] ) ? $astra_options[ 'header-widget-' . $index . '-line-height' ] : '',
-		'line-height-unit'    => 'em',
-		'letter-spacing'      => ! isset( $astra_options[ 'header-widget-' . $index . '-font-extras' ] ) && isset( $astra_options[ 'header-widget-' . $index . '-letter-spacing' ] ) ? $astra_options[ 'header-widget-' . $index . '-letter-spacing' ] : '',
-		'letter-spacing-unit' => 'px',
-		'text-transform'      => ! isset( $astra_options[ 'header-widget-' . $index . '-font-extras' ] ) && isset( $astra_options[ 'header-widget-' . $index . '-text-transform' ] ) ? $astra_options[ 'header-widget-' . $index . '-text-transform' ] : '',
-		'text-decoration'     => '',
 	);
 
 
 	// Content Typography.
-	$defaults[ 'header-widget-' . $index . '-content-font-family' ] = 'inherit';
-	$defaults[ 'header-widget-' . $index . '-content-font-weight' ] = 'inherit';
-	$defaults[ 'header-widget-' . $index . '-content-font-size' ]   = array(
+	$defaults[ 'header-widget-' . $index . '-content-font-family' ]    = 'inherit';
+	$defaults[ 'header-widget-' . $index . '-content-font-weight' ]    = 'inherit';
+	$defaults[ 'header-widget-' . $index . '-content-text-transform' ] = '';
+	$defaults[ 'header-widget-' . $index . '-content-line-height' ]    = '';
+	$defaults[ 'header-widget-' . $index . '-content-font-size' ]      = array(
 		'desktop'      => '',
 		'tablet'       => '',
 		'mobile'       => '',
 		'desktop-unit' => 'px',
 		'tablet-unit'  => 'px',
 		'mobile-unit'  => 'px',
-	);
-	$defaults[ 'header-widget-' . $index . '-content-font-extras' ] = array(
-		'line-height'         => ! isset( $astra_options[ 'header-widget-' . $index . '-content-font-extras' ] ) && isset( $astra_options[ 'header-widget-' . $index . '-content-line-height' ] ) ? $astra_options[ 'header-widget-' . $index . '-content-line-height' ] : '',
-		'line-height-unit'    => 'em',
-		'letter-spacing'      => ! isset( $astra_options[ 'header-widget-' . $index . '-content-font-extras' ] ) && isset( $astra_options[ 'header-widget-' . $index . '-content-letter-spacing' ] ) ? $astra_options[ 'header-widget-' . $index . '-content-letter-spacing' ] : '',
-		'letter-spacing-unit' => 'px',
-		'text-transform'      => ! isset( $astra_options[ 'header-widget-' . $index . '-content-font-extras' ] ) && isset( $astra_options[ 'header-widget-' . $index . '-content-transform' ] ) ? $astra_options[ 'header-widget-' . $index . '-content-transform' ] : '',
-		'text-decoration'     => '',
 	);
 
 	$defaults[ 'sidebar-widgets-header-widget-' . $index . '-margin' ] = Astra_Builder_Helper::$default_responsive_spacing;
@@ -1803,17 +1548,11 @@ function astra_prepare_widget_defaults( $defaults, $index ) {
 	);
 
 	// Content Typography.
-	$defaults[ 'footer-widget-' . $index . '-content-font-family' ] = 'inherit';
-	$defaults[ 'footer-widget-' . $index . '-content-font-weight' ] = 'inherit';
-	$defaults[ 'footer-widget-' . $index . '-content-font-extras' ] = array(
-		'line-height'         => ! isset( $astra_options[ 'footer-widget-' . $index . '-content-font-extras' ] ) && isset( $astra_options[ 'footer-widget-' . $index . '-content-line-height' ] ) ? $astra_options[ 'footer-widget-' . $index . '-content-line-height' ] : '',
-		'line-height-unit'    => 'em',
-		'letter-spacing'      => ! isset( $astra_options[ 'footer-widget-' . $index . '-content-font-extras' ] ) && isset( $astra_options[ 'footer-widget-' . $index . '-content-letter-spacing' ] ) ? $astra_options[ 'footer-widget-' . $index . '-content-letter-spacing' ] : '',
-		'letter-spacing-unit' => 'px',
-		'text-transform'      => ! isset( $astra_options[ 'footer-widget-' . $index . '-content-font-extras' ] ) && isset( $astra_options[ 'footer-widget-' . $index . '-content-transform' ] ) ? $astra_options[ 'footer-widget-' . $index . '-content-transform' ] : '',
-		'text-decoration'     => '',
-	);
-	$defaults[ 'footer-widget-' . $index . '-content-font-size' ]   = array(
+	$defaults[ 'footer-widget-' . $index . '-content-font-family' ]    = 'inherit';
+	$defaults[ 'footer-widget-' . $index . '-content-font-weight' ]    = 'inherit';
+	$defaults[ 'footer-widget-' . $index . '-content-text-transform' ] = '';
+	$defaults[ 'footer-widget-' . $index . '-content-line-height' ]    = '';
+	$defaults[ 'footer-widget-' . $index . '-content-font-size' ]      = array(
 		'desktop'      => '',
 		'tablet'       => '',
 		'mobile'       => '',
@@ -1824,8 +1563,8 @@ function astra_prepare_widget_defaults( $defaults, $index ) {
 
 	$defaults[ 'footer-widget-alignment-' . $index ] = array(
 		'desktop' => 'left',
-		'tablet'  => $apply_new_default_color_typo_values ? '' : 'center',
-		'mobile'  => $apply_new_default_color_typo_values ? '' : 'center',
+		'tablet'  => 'center',
+		'mobile'  => 'center',
 	);
 
 	$defaults[ 'sidebar-widgets-footer-widget-' . $index . '-margin' ] = Astra_Builder_Helper::$default_responsive_spacing;
@@ -1840,15 +1579,7 @@ function astra_prepare_widget_defaults( $defaults, $index ) {
  * @param array   $defaults defaults.
  * @param integer $index index.
  */
-function astra_prepare_menu_defaults( $defaults, $index ) {
-
-	/**
-	 * Update Astra default color and typography values. To not update directly on existing users site, added backwards.
-	 *
-	 * @since 4.0.0
-	 */
-	$apply_new_default_color_typo_values = Astra_Dynamic_CSS::astra_check_default_color_typo();
-	$astra_options                       = Astra_Theme_Options::get_astra_options();
+function prepare_menu_defaults( $defaults, $index ) {
 
 	$_prefix = 'menu' . $index;
 
@@ -1888,7 +1619,7 @@ function astra_prepare_menu_defaults( $defaults, $index ) {
 	);
 
 	$defaults[ 'header-' . $_prefix . '-color-responsive' ] = array(
-		'desktop' => $apply_new_default_color_typo_values ? 'var(--ast-global-color-3)' : '',
+		'desktop' => '',
 		'tablet'  => '',
 		'mobile'  => '',
 	);
@@ -1900,7 +1631,7 @@ function astra_prepare_menu_defaults( $defaults, $index ) {
 	);
 
 	$defaults[ 'header-' . $_prefix . '-h-color-responsive' ] = array(
-		'desktop' => $apply_new_default_color_typo_values ? 'var(--ast-global-color-1)' : '',
+		'desktop' => '',
 		'tablet'  => '',
 		'mobile'  => '',
 	);
@@ -1912,7 +1643,7 @@ function astra_prepare_menu_defaults( $defaults, $index ) {
 	);
 
 	$defaults[ 'header-' . $_prefix . '-a-color-responsive' ] = array(
-		'desktop' => $apply_new_default_color_typo_values ? 'var(--ast-global-color-1)' : '',
+		'desktop' => '',
 		'tablet'  => '',
 		'mobile'  => '',
 	);
@@ -1923,39 +1654,18 @@ function astra_prepare_menu_defaults( $defaults, $index ) {
 	$defaults[ 'section-hb-menu-' . $index . '-margin' ]  = Astra_Builder_Helper::$default_responsive_spacing;
 	$defaults[ 'header-menu' . $index . '-menu-spacing' ] = Astra_Builder_Helper::$default_responsive_spacing;
 
+
+
 	/**
 	 * Submenu
 	 */
-	$defaults[ 'header-' . $_prefix . '-submenu-item-border' ]          = false;
-	$defaults[ 'header-' . $_prefix . '-submenu-item-b-size' ]          = '1';
-	$defaults[ 'header-' . $_prefix . '-submenu-item-b-color' ]         = '#eaeaea';
-	$header_button_submenu_border_radius_fields                         = ! isset( $astra_options[ 'header-' . $_prefix . '-submenu-border-radius-fields' ] ) && isset( $astra_options[ 'header-' . $_prefix . '-submenu-border-radius' ] ) ? $astra_options[ 'header-' . $_prefix . '-submenu-border-radius' ] : '';
-	$defaults[ 'header-' . $_prefix . '-submenu-border-radius-fields' ] = array(
-		'desktop'      => array(
-			'top'    => $header_button_submenu_border_radius_fields,
-			'right'  => $header_button_submenu_border_radius_fields,
-			'bottom' => $header_button_submenu_border_radius_fields,
-			'left'   => $header_button_submenu_border_radius_fields,
-		),
-		'tablet'       => array(
-			'top'    => '',
-			'right'  => '',
-			'bottom' => '',
-			'left'   => '',
-		),
-		'mobile'       => array(
-			'top'    => '',
-			'right'  => '',
-			'bottom' => '',
-			'left'   => '',
-		),
-		'desktop-unit' => 'px',
-		'tablet-unit'  => 'px',
-		'mobile-unit'  => 'px',
-	);
-	$defaults[ 'header-' . $_prefix . '-submenu-top-offset' ]           = '';
-	$defaults[ 'header-' . $_prefix . '-submenu-width' ]                = '';
-	$defaults[ 'header-' . $_prefix . '-submenu-border' ]               = array(
+	$defaults[ 'header-' . $_prefix . '-submenu-item-border' ]   = false;
+	$defaults[ 'header-' . $_prefix . '-submenu-item-b-size' ]   = '1';
+	$defaults[ 'header-' . $_prefix . '-submenu-item-b-color' ]  = '#eaeaea';
+	$defaults[ 'header-' . $_prefix . '-submenu-border-radius' ] = '';
+	$defaults[ 'header-' . $_prefix . '-submenu-top-offset' ]    = '';
+	$defaults[ 'header-' . $_prefix . '-submenu-width' ]         = '';
+	$defaults[ 'header-' . $_prefix . '-submenu-border' ]        = array(
 		'top'    => 2,
 		'bottom' => 0,
 		'left'   => 0,
@@ -1970,7 +1680,7 @@ function astra_prepare_menu_defaults( $defaults, $index ) {
 	/**
 	 * Menu - Typography.
 	 */
-	$defaults[ 'header-' . $_prefix . '-font-size' ]   = array(
+	$defaults[ 'header-' . $_prefix . '-font-size' ]      = array(
 		'desktop'      => '',
 		'tablet'       => '',
 		'mobile'       => '',
@@ -1978,16 +1688,10 @@ function astra_prepare_menu_defaults( $defaults, $index ) {
 		'tablet-unit'  => 'px',
 		'mobile-unit'  => 'px',
 	);
-	$defaults[ 'header-' . $_prefix . '-font-weight' ] = 'inherit';
-	$defaults[ 'header-' . $_prefix . '-font-family' ] = 'inherit';
-	$defaults[ 'header-' . $_prefix . '-font-extras' ] = array(
-		'line-height'         => ! isset( $astra_options[ 'header-' . $_prefix . '-font-extras' ] ) && isset( $astra_options[ 'header-' . $_prefix . '-line-height' ] ) ? $astra_options[ 'header-' . $_prefix . '-line-height' ] : '',
-		'line-height-unit'    => 'em',
-		'letter-spacing'      => '',
-		'letter-spacing-unit' => 'px',
-		'text-transform'      => ! isset( $astra_options[ 'header-' . $_prefix . '-font-extras' ] ) && isset( $astra_options[ 'header-' . $_prefix . '-text-transform' ] ) ? $astra_options[ 'header-' . $_prefix . '-text-transform' ] : '',
-		'text-decoration'     => '',
-	);
+	$defaults[ 'header-' . $_prefix . '-font-weight' ]    = 'inherit';
+	$defaults[ 'header-' . $_prefix . '-font-family' ]    = 'inherit';
+	$defaults[ 'header-' . $_prefix . '-text-transform' ] = '';
+	$defaults[ 'header-' . $_prefix . '-line-height' ]    = '';
 
 	/**
 	 * Header Types - Defaults

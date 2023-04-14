@@ -33,92 +33,159 @@ if ( ! class_exists( 'Astra_Archive_Typo_Configs' ) ) {
 			$_configs = array();
 
 			// Learn More link if Astra Pro is not activated.
-			if ( astra_showcase_upgrade_notices() ) {
+			if ( ! defined( 'ASTRA_EXT_VER' ) ) {
 
 				$_configs = array(
 
 					/**
-					 * Option: Astra Pro items for blog pro.
+					 * Option: Learn More about Contant Typography
 					 */
 					array(
-						'name'     => ASTRA_THEME_SETTINGS . '[ast-blog-pro-items]',
+						'name'     => ASTRA_THEME_SETTINGS . '[ast-blog-typography-more-feature-description]',
 						'type'     => 'control',
-						'control'  => 'ast-upgrade',
-						'renderAs' => 'list',
-						'choices'  => array(
-							'one'   => array(
-								'title' => __( 'Archive blog layout', 'astra' ),
-							),
-							'two'   => array(
-								'title' => __( 'Grid, Masonry layout', 'astra' ),
-							),
-							'three' => array(
-								'title' => __( 'Custom featured images size', 'astra' ),
-							),
-							'four'  => array(
-								'title' => __( 'Archive pagination options', 'astra' ),
-							),
-							'six'   => array(
-								'title' => __( 'Extended typography options', 'astra' ),
-							),
-							'seven' => array(
-								'title' => __( 'Extended spacing options', 'astra' ),
-							),
-							'eight' => array(
-								'title' => __( 'Archive read time', 'astra' ),
-							),
-							'nine'  => array(
-								'title' => __( 'Archive excerpt options', 'astra' ),
-							),
-							'ten'   => array(
-								'title' => __( 'Extended spacing options', 'astra' ),
-							),
-						),
+						'control'  => 'ast-description',
 						'section'  => 'section-blog',
-						'default'  => '',
 						'priority' => 999,
-						'context'  => array(),
-						'title'    => __( 'Take your blog to the next level with powerful design features', 'astra' ),
-						'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
+						'title'    => '',
+						'help'     => '<p>' . __( 'More Options Available in Astra Pro!', 'astra' ) . '</p><a href="' . astra_get_pro_url( 'https://wpastra.com/pro/', 'customizer', 'learn-more', 'upgrade-to-pro' ) . '" class="button button-secondary"  target="_blank" rel="noopener">' . __( 'Learn More', 'astra' ) . '</a>',
+						'settings' => array(),
+						'divider'  => array( 'ast_class' => 'ast-bottom-divider' ),
 					),
 				);
 			}
 
-			if ( ! defined( 'ASTRA_EXT_VER' ) ) {
+			if ( defined( 'ASTRA_EXT_VER' ) && Astra_Ext_Extension::is_active( 'typography' ) ) {
+
 				$new_configs = array(
+
+					/**
+					 * Option: Blog / Archive Typography
+					 */
+					array(
+						'name'      => ASTRA_THEME_SETTINGS . '[blog-content-archive-summary-typo]',
+						'default'   => astra_get_option( 'blog-content-archive-summary-typo' ),
+						'type'      => 'control',
+						'control'   => 'ast-settings-group',
+						'title'     => __( 'Archive Title Font', 'astra' ),
+						'section'   => 'section-blog',
+						'transport' => 'postMessage',
+						'priority'  => 140,
+						'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
+						'context'   => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ?
+							Astra_Builder_Helper::$design_tab : Astra_Builder_Helper::$general_tab,
+					),
+
+					/**
+					 * Option: Archive Summary Box Title Font Size
+					 */
+					array(
+						'name'        => 'font-size-archive-summary-title',
+						'parent'      => ASTRA_THEME_SETTINGS . '[blog-content-archive-summary-typo]',
+						'section'     => 'section-blog',
+						'type'        => 'sub-control',
+						'control'     => 'ast-responsive',
+						'transport'   => 'postMessage',
+						'default'     => astra_get_option( 'font-size-archive-summary-title' ),
+						'priority'    => 8,
+						'title'       => __( 'Size', 'astra' ),
+						'input_attrs' => array(
+							'min' => 0,
+						),
+						'units'       => array(
+							'px' => 'px',
+							'em' => 'em',
+						),
+					),
+
+					array(
+						'name'      => ASTRA_THEME_SETTINGS . '[blog-content-blog-post-title-typo]',
+						'default'   => astra_get_option( 'blog-content-blog-post-title-typo' ),
+						'type'      => 'control',
+						'control'   => 'ast-settings-group',
+						'title'     => __( 'Post Title Font', 'astra' ),
+						'section'   => 'section-blog',
+						'transport' => 'postMessage',
+						'priority'  => 140,
+						'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
+						'context'   => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ?
+							Astra_Builder_Helper::$design_tab : Astra_Builder_Helper::$general_tab,
+					),
+
 					/**
 					 * Option: Blog - Post Title Font Size
 					 */
 					array(
-						'name'              => ASTRA_THEME_SETTINGS . '[font-size-page-title]',
-						'control'           => 'ast-responsive-slider',
-						'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_slider' ),
-						'section'           => 'section-blog',
-						'type'              => 'control',
-						'transport'         => 'postMessage',
-						'title'             => __( 'Post Title Font Size', 'astra' ),
-						'priority'          => 140,
-						'default'           => astra_get_option( 'font-size-page-title' ),
-						'suffix'            => array( 'px', 'em' ),
-						'input_attrs'       => array(
-							'px' => array(
-								'min'  => 0,
-								'step' => 1,
-								'max'  => 100,
-							),
-							'em' => array(
-								'min'  => 0,
-								'step' => 0.01,
-								'max'  => 20,
-							),
+						'name'        => 'font-size-page-title',
+						'parent'      => ASTRA_THEME_SETTINGS . '[blog-content-blog-post-title-typo]',
+						'section'     => 'section-blog',
+						'type'        => 'sub-control',
+						'control'     => 'ast-responsive',
+						'transport'   => 'postMessage',
+						'priority'    => 2,
+						'default'     => astra_get_option( 'font-size-page-title' ),
+						'title'       => __( 'Size', 'astra' ),
+						'input_attrs' => array(
+							'min' => 0,
 						),
-						'context'           => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ?
-							Astra_Builder_Helper::$design_tab : Astra_Builder_Helper::$general_tab,
-						'divider'           => array( 'ast_class' => 'ast-section-spacing' ),
+						'units'       => array(
+							'px' => 'px',
+							'em' => 'em',
+						),
 					),
 				);
-				$_configs    = array_merge( $_configs, $new_configs );
+			} else {
+
+				$new_configs = array(
+
+					/**
+					 * Option: Archive Summary Box Title Font Size
+					 */
+					array(
+						'name'        => ASTRA_THEME_SETTINGS . '[font-size-archive-summary-title]',
+						'section'     => 'section-blog',
+						'type'        => 'control',
+						'control'     => 'ast-responsive',
+						'transport'   => 'postMessage',
+						'default'     => astra_get_option( 'font-size-archive-summary-title' ),
+						'title'       => __( 'Archive Title Font Size', 'astra' ),
+						'input_attrs' => array(
+							'min' => 0,
+						),
+						'units'       => array(
+							'px' => 'px',
+							'em' => 'em',
+						),
+						'priority'    => 140,
+						'context'     => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ?
+							Astra_Builder_Helper::$design_tab : Astra_Builder_Helper::$general_tab,
+					),
+
+					/**
+					 * Option: Blog - Post Title Font Size
+					 */
+					array(
+						'name'        => ASTRA_THEME_SETTINGS . '[font-size-page-title]',
+						'section'     => 'section-blog',
+						'type'        => 'control',
+						'control'     => 'ast-responsive',
+						'transport'   => 'postMessage',
+						'default'     => astra_get_option( 'font-size-page-title' ),
+						'title'       => __( 'Post Title Font Size', 'astra' ),
+						'input_attrs' => array(
+							'min' => 0,
+						),
+						'units'       => array(
+							'px' => 'px',
+							'em' => 'em',
+						),
+						'priority'    => 140,
+						'context'     => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ?
+							Astra_Builder_Helper::$design_tab : Astra_Builder_Helper::$general_tab,
+					),
+				);
 			}
+
+			$_configs = array_merge( $_configs, $new_configs );
 
 			$configurations = array_merge( $configurations, $_configs );
 
